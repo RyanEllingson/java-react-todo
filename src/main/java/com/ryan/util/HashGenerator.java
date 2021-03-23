@@ -10,7 +10,7 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class HashGenerator {
 	
-	public static String HashPassword(String inputPass) {
+	public static String hashPassword(String inputPass) {
 //		generate random salt
 		SecureRandom random = new SecureRandom();
 		byte[] salt = new byte[16];
