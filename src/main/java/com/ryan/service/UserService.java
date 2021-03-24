@@ -13,7 +13,7 @@ public class UserService {
 		this.userRepo = userRepo;
 	}
 	
-	public Result<User> validateRegistration(User user) {
+	private Result<User> validateRegistration(User user) {
 		Result<User> result = new Result<>();
 		if (user.getEmail() == null || user.getEmail().isBlank()) {
 			result.addMessage("Email is required");
@@ -44,6 +44,35 @@ public class UserService {
 				result.addMessage("There was a problem creating user");
 			} else {
 				result.setPayload(user);
+			}
+		}
+		return result;
+	}
+	
+	private Result<User> validateLogin(User user) {
+		Result<User> result = new Result<>();
+		if (user.getEmail() == null || user.getEmail().isBlank()) {
+			result.addMessage("Email is required");
+		}
+		if (user.getPassword() == null || user.getPassword().isBlank()) {
+			result.addMessage("Password is required");
+		}
+		return result;
+	}
+	
+	public Result<User> login(User user) {
+		Result<User> result = validateLogin(user);
+		if (result.isSuccess()) {
+			User requestedUser = userRepo.getUserByEmail(user.getEmail());
+			if (requestedUser.getUserId() == 0) {
+				result.addMessage("Email not found");
+			} else {
+				String[] passwordParams = requestedUser.getPassword().split("/");
+				if (HashGenerator.comparePasswords(passwordParams[0], user.getPassword(), passwordParams[1])) {
+					result.setPayload(requestedUser);
+				} else {
+					result.addMessage("Incorrect password");
+				}
 			}
 		}
 		return result;
