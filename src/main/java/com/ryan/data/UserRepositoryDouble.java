@@ -1,6 +1,7 @@
 package com.ryan.data;
 
 import com.ryan.models.User;
+import com.ryan.util.HashGenerator;
 
 public class UserRepositoryDouble implements UserRepository {
 
@@ -19,6 +20,10 @@ public class UserRepositoryDouble implements UserRepository {
 		User user = new User();
 		if (email.equals("test@test.com")) {
 			user.setUserId(1);
+			user.setFirstName("Test");
+			user.setLastName("Testeroo");
+			user.setEmail("test@test.com");
+			user.setPassword(HashGenerator.hashPassword("password"));
 		}
 		return user;
 	}

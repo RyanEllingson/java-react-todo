@@ -1,6 +1,7 @@
 package com.ryan.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
@@ -12,7 +13,7 @@ import com.ryan.models.User;
 import com.ryan.service.UserService;
 import com.ryan.util.HashGenerator;
 
-public class UserServiceTest {
+public class UserRegistrationTest {
 	private static UserService userService;
 	
 	@BeforeClass
