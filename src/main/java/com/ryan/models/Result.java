@@ -1,15 +1,17 @@
 package com.ryan.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Result<T> {
 	private T payload;
-	private List<String> messages;
+	private Map<String, String> messages;
 	
 	public Result() {
 		super();
-		this.messages = new ArrayList<>();
+		this.messages = new HashMap<>();
 	}
 	
 	public T getPayload() {
@@ -20,12 +22,12 @@ public class Result<T> {
 		this.payload = payload;
 	}
 	
-	public List<String> getMessages() {
-		return new ArrayList<>(messages);
+	public Map<String, String> getMessages() {
+		return new HashMap<String, String>(messages);
 	}
 	
-	public void addMessage(String message) {
-		messages.add(message);
+	public void addMessage(String key, String value) {
+		messages.put(key, value);
 	}
 	
 	public boolean isSuccess() {

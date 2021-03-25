@@ -32,7 +32,7 @@ public class UserLoginTest {
 	public void emailShouldNotBeNull() {
 		User user = new User (0, null, null, null, "password");
 		Result<User> expected = new Result<>();
-		expected.addMessage("Email is required");
+		expected.addMessage("email", "Email is required");
 		Result<User> actual = userService.login(user);
 		assertEquals(expected, actual);
 	}
@@ -41,7 +41,7 @@ public class UserLoginTest {
 	public void emailShouldNotBeBlank() {
 		User user = new User (0, null, null, "   ", "password");
 		Result<User> expected = new Result<>();
-		expected.addMessage("Email is required");
+		expected.addMessage("email", "Email is required");
 		Result<User> actual = userService.login(user);
 		assertEquals(expected, actual);
 	}
@@ -50,7 +50,7 @@ public class UserLoginTest {
 	public void shouldNotFindNonExistingEmail() {
 		User user = new User (0, null, null, "blah@blah.com", "password");
 		Result<User> expected = new Result<>();
-		expected.addMessage("Email not found");
+		expected.addMessage("email", "Email not found");
 		Result<User> actual = userService.login(user);
 		assertEquals(expected, actual);
 	}
@@ -59,7 +59,7 @@ public class UserLoginTest {
 	public void passwordShouldNotBeNull() {
 		User user = new User (0, null, null, "test@test.com", null);
 		Result<User> expected = new Result<>();
-		expected.addMessage("Password is required");
+		expected.addMessage("password", "Password is required");
 		Result<User> actual = userService.login(user);
 		assertEquals(expected, actual);
 	}
@@ -68,7 +68,7 @@ public class UserLoginTest {
 	public void passwordShouldNotBeBlank() {
 		User user = new User (0, null, null, "test@test.com", "   ");
 		Result<User> expected = new Result<>();
-		expected.addMessage("Password is required");
+		expected.addMessage("password", "Password is required");
 		Result<User> actual = userService.login(user);
 		assertEquals(expected, actual);
 	}
@@ -77,7 +77,7 @@ public class UserLoginTest {
 	public void shouldNotLoginWithIncorrectPassword() {
 		User user = new User (0, null, null, "test@test.com", "blabla");
 		Result<User> expected = new Result<>();
-		expected.addMessage("Incorrect password");
+		expected.addMessage("password", "Incorrect password");
 		Result<User> actual = userService.login(user);
 		assertEquals(expected, actual);
 	}

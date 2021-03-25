@@ -38,7 +38,7 @@ public class UserRegistrationTest {
 		User user = new User(0, null, "blah", "blah@blah.com", "blabla");
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("First name is required");
+		expected.addMessage("firstName", "First name is required");
 		assertEquals(expected, actual);
 	}
 	
@@ -47,7 +47,7 @@ public class UserRegistrationTest {
 		User user = new User(0, "   ", "blah", "blah@blah.com", "blabla");
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("First name is required");
+		expected.addMessage("firstName", "First name is required");
 		assertEquals(expected, actual);
 	}
 	
@@ -56,7 +56,7 @@ public class UserRegistrationTest {
 		User user = new User(0, "blah", null, "blah@blah.com", "blabla");
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("Last name is required");
+		expected.addMessage("lastName", "Last name is required");
 		assertEquals(expected, actual);
 	}
 	
@@ -65,7 +65,7 @@ public class UserRegistrationTest {
 		User user = new User(0, "blah", "   ", "blah@blah.com", "blabla");
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("Last name is required");
+		expected.addMessage("lastName", "Last name is required");
 		assertEquals(expected, actual);
 	}
 	
@@ -74,7 +74,7 @@ public class UserRegistrationTest {
 		User user = new User(0, "blah", "blah", null, "blabla");
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("Email is required");
+		expected.addMessage("email", "Email is required");
 		assertEquals(expected, actual);
 	}
 	
@@ -83,7 +83,7 @@ public class UserRegistrationTest {
 		User user = new User(0, "blah", "blah", "   ", "blabla");
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("Email is required");
+		expected.addMessage("email", "Email is required");
 		assertEquals(expected, actual);
 	}
 	
@@ -92,7 +92,7 @@ public class UserRegistrationTest {
 		User user = new User(0, "blah", "blah", "test@test.com", "blabla");
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("Email already in use");
+		expected.addMessage("email", "Email already in use");
 		assertEquals(expected, actual);
 	}
 	
@@ -101,7 +101,7 @@ public class UserRegistrationTest {
 		User user = new User(0, "blah", "blah", "blah@blah.com", null);
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("Password is required");
+		expected.addMessage("password", "Password is required");
 		assertEquals(expected, actual);
 	}
 	
@@ -110,7 +110,7 @@ public class UserRegistrationTest {
 		User user = new User(0, "blah", "blah", "blah@blah.com", "   ");
 		Result<User> actual = userService.register(user);
 		Result<User> expected = new Result<>();
-		expected.addMessage("Password is required");
+		expected.addMessage("password", "Password is required");
 		assertEquals(expected, actual);
 	}
 
