@@ -12,7 +12,7 @@ public class PostRequestHelper {
 		if (uri.matches("/api/register")) {
 			UserController.register(req, res);
 		} else if (uri.matches("/api/login")) {
-			
+			UserController.login(req, res);
 		}
 	}
 }
