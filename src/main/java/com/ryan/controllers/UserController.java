@@ -44,6 +44,27 @@ public class UserController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public static void login(HttpServletRequest req, HttpServletResponse res) {
+		try {
+			UserService service = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
+			ObjectMapper om = new ObjectMapper();
+			JsonNode jsonNode = om.readTree(req.getReader());
+			JsonNode emailNode = jsonNode.get("email");
+			JsonNode passwordNode = jsonNode.get("password");
+			User user = new User();
+			if (emailNode != null && !(emailNode instanceof NullNode)) {
+				user.setEmail(emailNode.asText());
+			}
+			if (passwordNode != null && !(passwordNode instanceof NullNode)) {
+				user.setPassword(passwordNode.asText());
+			}
+			Result<User> result = service.login(user);
+			res.setStatus(200);
+			res.getWriter().write(om.writeValueAsString(result));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
