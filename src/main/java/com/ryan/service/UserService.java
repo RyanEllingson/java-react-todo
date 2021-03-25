@@ -4,6 +4,7 @@ import com.ryan.data.UserRepository;
 import com.ryan.models.Result;
 import com.ryan.models.User;
 import com.ryan.util.HashGenerator;
+import com.ryan.util.JWTBuilder;
 
 public class UserService {
 	private UserRepository userRepo;
