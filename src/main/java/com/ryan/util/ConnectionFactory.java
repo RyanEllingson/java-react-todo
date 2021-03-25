@@ -53,7 +53,7 @@ public class ConnectionFactory {
 			case DEVELOPMENT:
 				username = "postgres";
 				password = "postgres";
-				dbUrl = "jdbc:postgresql://localhost/postgres?current_schema=java_react_todo";
+				dbUrl = "jdbc:postgresql://localhost/postgres?currentSchema=java_react_todo";
 			}
 			conn = DriverManager.getConnection(dbUrl, username, password);
 		} catch (URISyntaxException | SQLException e) {

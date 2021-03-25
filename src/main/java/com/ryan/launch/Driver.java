@@ -11,9 +11,13 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
+import com.ryan.util.ConnectionFactory;
+import com.ryan.util.Environment;
+
 public class Driver {
 
 	public static void main(String[] args) throws ServletException, LifecycleException {
+		ConnectionFactory.setEnvironment(Environment.DEVELOPMENT);
 		String webappDirLocation = "src/main/webapp/";
 		Tomcat tomcat = new Tomcat();
 		
