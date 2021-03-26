@@ -3,6 +3,9 @@ package com.ryan.test;
 import static org.junit.Assert.assertEquals;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,6 +13,7 @@ import org.junit.Test;
 import com.ryan.models.User;
 import com.ryan.util.JWTBuilder;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -25,10 +29,15 @@ public class JWTBuilderTest {
 	@Test
 	public void shouldBuildJWT() {
 		User user = new User();
+		user.setFirstName("first name");
+		user.setLastName("last name");
 		user.setEmail("test@test.com");
 		String jws = JWTBuilder.buildJWT(user);
-		String decodedEmail = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jws).getBody().getSubject();
-		assertEquals("test@test.com", decodedEmail);
+		Claims jwtBody = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jws).getBody();
+		assertEquals("first name", jwtBody.get("firstName"));
+		assertEquals("last name", jwtBody.get("lastName"));
+		assertEquals("test@test.com", jwtBody.getSubject());
+		assertEquals(new Date(Instant.now().plus(15, ChronoUnit.MINUTES).getEpochSecond() * 1000), jwtBody.getExpiration());
 	}
 
 }
