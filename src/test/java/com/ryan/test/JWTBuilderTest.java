@@ -1,6 +1,7 @@
 package com.ryan.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.security.Key;
 import java.time.Instant;
@@ -37,7 +38,10 @@ public class JWTBuilderTest {
 		assertEquals("first name", jwtBody.get("firstName"));
 		assertEquals("last name", jwtBody.get("lastName"));
 		assertEquals("test@test.com", jwtBody.getSubject());
-		assertEquals(new Date(Instant.now().plus(15, ChronoUnit.MINUTES).getEpochSecond() * 1000), jwtBody.getExpiration());
+		Instant expectedExpiration = Instant.now().plus(15, ChronoUnit.MINUTES);
+		System.out.println(jwtBody.getExpiration().toInstant().until(expectedExpiration, ChronoUnit.SECONDS));
+		long expirationDiffSeconds = jwtBody.getExpiration().toInstant().until(expectedExpiration, ChronoUnit.SECONDS);
+		assertTrue(expirationDiffSeconds < 5L);
 	}
 
 }
