@@ -1,8 +1,13 @@
-import React from "react";
+import React, {useContext} from "react";
+import {Redirect} from "react-router-dom";
+import {AuthContext} from "../../auth/auth";
 
 const Home = function() {
+    const {user} = useContext(AuthContext);
     return (
-        <h1>Java React Todo!</h1>
+        user
+        ? <h1>{`Welcome ${user.firstName} ${user.lastName}!`}</h1>
+        : <Redirect to="/login" />
     );
 };
 
