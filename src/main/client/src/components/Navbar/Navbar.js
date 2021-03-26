@@ -1,7 +1,16 @@
-import React from "react";
-import {NavLink} from "react-router-dom";
+import React, {useContext} from "react";
+import {useHistory, NavLink} from "react-router-dom";
+import {AuthContext} from "../../auth/auth";
 
 const Navbar = function() {
+    const {user, logoutUser} = useContext(AuthContext);
+    const history = useHistory();
+
+    const handleLogout = function(event) {
+        event.preventDefault();
+        logoutUser(history);
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5">
             <div className="container-fluid">
@@ -11,12 +20,15 @@ const Navbar = function() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
+                        {!user && <li className="nav-item">
                             <NavLink exact className="nav-link" activeClassName="active" to="/register">Register</NavLink>
-                        </li>
-                        <li className="nav-item">
+                        </li>}
+                        {!user && <li className="nav-item">
                             <NavLink exact className="nav-link" activeClassName="active" to="/login">Login</NavLink>
-                        </li>
+                        </li>}
+                        {user && <li className="nav-item">
+                            <a className="nav-link" onClick={handleLogout} href="/login">Logout</a>
+                        </li>}
                     </ul>
                 </div>
             </div>
