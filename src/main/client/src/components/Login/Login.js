@@ -12,16 +12,18 @@ const Login = function() {
             newInputs[event.target.name] = event.target.value;
             return newInputs;
         });
-    }
+    };
 
     const handleSubmit = function(event) {
         event.preventDefault();
         axios.post("/api/login", inputs)
         .then(function(response) {
-            setErrors(response.data.messages);
-            console.log(response.data);
-        })
-    }
+            console.log(response.data.payload);
+            setErrors({});
+        }).catch(function(error) {
+            setErrors(error.response.data.messages);
+        });
+    };
 
     return (
         <div className="Login">
