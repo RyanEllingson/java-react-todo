@@ -44,12 +44,13 @@ public class UserController {
 			Result<String> result = new Result<>();
 			if (userResult.isSuccess()) {
 				result.setPayload(JWTBuilder.buildJWT(userResult.getPayload()));
+				res.setStatus(200);
 			} else {
 				for (Entry<String, String> entry : userResult.getMessages().entrySet()) {
 					result.addMessage(entry.getKey(), entry.getValue());
 				}
+				res.setStatus(400);
 			}
-			res.setStatus(200);
 			res.getWriter().write(om.writeValueAsString(result));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -74,12 +75,13 @@ public class UserController {
 			Result<String> result = new Result<>();
 			if (userResult.isSuccess()) {
 				result.setPayload(JWTBuilder.buildJWT(userResult.getPayload()));
+				res.setStatus(200);
 			} else {
 				for (Entry<String, String> entry : userResult.getMessages().entrySet()) {
 					result.addMessage(entry.getKey(), entry.getValue());
 				}
+				res.setStatus(400);
 			}
-			res.setStatus(200);
 			res.getWriter().write(om.writeValueAsString(result));
 		} catch (IOException e) {
 			e.printStackTrace();

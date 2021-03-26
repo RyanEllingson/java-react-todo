@@ -39,7 +39,6 @@ public class JWTBuilderTest {
 		assertEquals("last name", jwtBody.get("lastName"));
 		assertEquals("test@test.com", jwtBody.getSubject());
 		Instant expectedExpiration = Instant.now().plus(15, ChronoUnit.MINUTES);
-		System.out.println(jwtBody.getExpiration().toInstant().until(expectedExpiration, ChronoUnit.SECONDS));
 		long expirationDiffSeconds = jwtBody.getExpiration().toInstant().until(expectedExpiration, ChronoUnit.SECONDS);
 		assertTrue(expirationDiffSeconds < 5L);
 	}
