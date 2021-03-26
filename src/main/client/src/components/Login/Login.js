@@ -28,7 +28,7 @@ const Login = function() {
     return (
         <div className="Login">
             <div className="container">
-                <div className="row mt-5">
+                <div className="row">
                     <div className="col-12">
                         <div className="card">
                             <div className="card-body">
