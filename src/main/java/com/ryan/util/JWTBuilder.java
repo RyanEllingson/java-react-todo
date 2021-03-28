@@ -16,7 +16,7 @@ public class JWTBuilder {
 	public static String buildJWT(User user) {
 		Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(System.getenv("JWT_SECRET_STRING")));
 		Date expiration = new Date(Instant.now().plus(15, ChronoUnit.MINUTES).getEpochSecond() * 1000);
-		String jws = Jwts.builder().setSubject(user.getEmail()).setExpiration(expiration).claim("firstName", user.getFirstName()).claim("lastName", user.getLastName()).signWith(key).compact();
+		String jws = Jwts.builder().setSubject(user.getEmail()).setExpiration(expiration).claim("userId", user.getUserId()).claim("firstName", user.getFirstName()).claim("lastName", user.getLastName()).signWith(key).compact();
 		return jws;
 	}
 }
