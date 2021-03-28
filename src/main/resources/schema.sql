@@ -6,3 +6,12 @@ create table users(
     password varchar(255) not null,
     primary key (user_id)
 );
+
+create table todos(
+    todo_id int unique not null generated always as identity,
+    user_id int not null,
+    task varchar(255) not null,
+    completed boolean not null,
+    primary key (todo_id),
+    foreign key (user_id) references users(user_id)
+);
