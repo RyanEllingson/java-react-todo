@@ -1,10 +1,9 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useEffect, useContext} from "react";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
 import {AuthContext} from "../../auth/auth";
 
 const Home = function() {
-    // const [todos, setTodos] = useState([]);
     const {user} = useContext(AuthContext);
 
     const renderTodos = function() {
