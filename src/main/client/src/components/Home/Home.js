@@ -4,7 +4,7 @@ import axios from "axios";
 import {AuthContext} from "../../auth/auth";
 
 const Home = function() {
-    const [todos, setTodos] = useState([]);
+    // const [todos, setTodos] = useState([]);
     const {user} = useContext(AuthContext);
 
     const renderTodos = function() {
@@ -16,6 +16,7 @@ const Home = function() {
         if (user) {
             renderTodos();
         }
+        // eslint-disable-next-line
     }, []);
 
     return (
