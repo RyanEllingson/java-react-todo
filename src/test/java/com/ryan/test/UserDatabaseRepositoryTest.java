@@ -28,9 +28,10 @@ public class UserDatabaseRepositoryTest {
 	
 	@Test
 	public void shouldCreateUser() {
-		User user = new User(2, "Tester", "Testeroo", "test2@test.com", "password2");
+		User user = new User(0, "Tester", "Testeroo", "test2@test.com", "password2");
 		int insertId = userRepo.createUser(user);
-		assertEquals(2, insertId);
+		assertEquals(3, insertId);
+		user.setUserId(insertId);
 		User createdUser = userRepo.getUserById(insertId);
 		assertEquals(user, createdUser);
 	}
@@ -45,7 +46,7 @@ public class UserDatabaseRepositoryTest {
 	@Test
 	public void shouldNotGetNonExistingId() {
 		User expected = new User();
-		User actual = userRepo.getUserById(2);
+		User actual = userRepo.getUserById(3);
 		assertEquals(expected, actual);
 	}
 	
@@ -74,7 +75,7 @@ public class UserDatabaseRepositoryTest {
 	
 	@Test
 	public void shouldNotUpdateNonExistingUser() {
-		User user = new User(2, "Testus", "Testensen", "testbla@test.com", "betterpassword");
+		User user = new User(3, "Testus", "Testensen", "testbla@test.com", "betterpassword");
 		int affectedRows = userRepo.updateUser(user);
 		assertEquals(0, affectedRows);
 	}
@@ -87,7 +88,7 @@ public class UserDatabaseRepositoryTest {
 	
 	@Test
 	public void shouldNotDeleteNonExistingUser() {
-		int affectedRows = userRepo.deleteUserById(2);
+		int affectedRows = userRepo.deleteUserById(3);
 		assertEquals(0, affectedRows);
 	}
 

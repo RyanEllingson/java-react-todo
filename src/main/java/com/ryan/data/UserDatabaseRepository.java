@@ -12,6 +12,7 @@ public class UserDatabaseRepository implements UserRepository {
 	private Connection conn;
 	
 	public UserDatabaseRepository(Connection conn) {
+		super();
 		this.conn = conn;
 	}
 
