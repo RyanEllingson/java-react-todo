@@ -25,6 +25,8 @@ create table todos(
     foreign key (user_id) references users(user_id)
 );
 
-insert into users (first_name, last_name, email, password) values ('Testy', 'Testerson', 'test@test.com', 'password');
+insert into users (first_name, last_name, email, password) values ('Testy', 'Testerson', 'test@test.com', 'password'), ('Bla', 'Blah', 'blah@blah.com', 'blabla');
+
+insert into todos (user_id, task, completed) values (2, 'write test for todos', false);
 
 end;$$
