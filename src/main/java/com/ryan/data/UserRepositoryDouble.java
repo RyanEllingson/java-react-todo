@@ -12,7 +12,11 @@ public class UserRepositoryDouble implements UserRepository {
 
 	@Override
 	public User getUserById(int userId) {
-		return null;
+		User user = new User();
+		if (userId == 1) {
+			user.setUserId(1);
+		}
+		return user;
 	}
 
 	@Override
