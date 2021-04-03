@@ -1,5 +1,7 @@
 package com.ryan.service;
 
+import java.util.List;
+
 import com.ryan.data.TodoRepository;
 import com.ryan.data.UserRepository;
 import com.ryan.models.Result;
@@ -42,5 +44,9 @@ public class TodoService {
 			}
 		}
 		return result;
+	}
+	
+	public List<Todo> getTodosByUser(int userId) {
+		return todoRepo.getTodosByUser(userId);
 	}
 }
