@@ -27,5 +27,29 @@ public class TodoCreateTest {
 		Result<Todo> actual = service.createTodo(todo);
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void shouldRequireUserId() {
+		Result<Todo> expected = new Result<>();
+		expected.addMessage("user", "User is required");
+		Result<Todo> actual = service.createTodo(new Todo(0, 0, "milk the chickens", true));
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void shouldNotCreateTodoForNonExistingUser() {
+		Result<Todo> expected = new Result<>();
+		expected.addMessage("user", "User not found");
+		Result<Todo> actual = service.createTodo(new Todo(0, 2, "shave the dog", false));
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void shouldRequireTask() {
+		Result<Todo> expected = new Result<>();
+		expected.addMessage("task", "Task is required");
+		Result<Todo> actual = service.createTodo(new Todo(0, 1, null, false));
+		assertEquals(expected, actual);
+	}
 
 }
