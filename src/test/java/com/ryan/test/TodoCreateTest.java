@@ -12,11 +12,11 @@ import com.ryan.models.Todo;
 import com.ryan.service.TodoService;
 
 public class TodoCreateTest {
-	private static TodoService service;
+	private static TodoService todoService;
 	
 	@BeforeClass
 	public static void setup() {
-		service = new TodoService(new TodoRepositoryDouble(), new UserRepositoryDouble());
+		todoService = new TodoService(new TodoRepositoryDouble(), new UserRepositoryDouble());
 	}
 	
 	@Test
@@ -24,7 +24,7 @@ public class TodoCreateTest {
 		Todo todo = new Todo(0, 1, "feed the fish", false);
 		Result<Todo> expected = new Result<>();
 		expected.setPayload(todo);
-		Result<Todo> actual = service.createTodo(todo);
+		Result<Todo> actual = todoService.createTodo(todo);
 		assertEquals(expected, actual);
 	}
 	
@@ -32,7 +32,7 @@ public class TodoCreateTest {
 	public void shouldRequireUserId() {
 		Result<Todo> expected = new Result<>();
 		expected.addMessage("user", "User is required");
-		Result<Todo> actual = service.createTodo(new Todo(0, 0, "milk the chickens", true));
+		Result<Todo> actual = todoService.createTodo(new Todo(0, 0, "milk the chickens", true));
 		assertEquals(expected, actual);
 	}
 	
@@ -40,7 +40,7 @@ public class TodoCreateTest {
 	public void shouldNotCreateTodoForNonExistingUser() {
 		Result<Todo> expected = new Result<>();
 		expected.addMessage("user", "User not found");
-		Result<Todo> actual = service.createTodo(new Todo(0, 2, "shave the dog", false));
+		Result<Todo> actual = todoService.createTodo(new Todo(0, 2, "shave the dog", false));
 		assertEquals(expected, actual);
 	}
 	
@@ -48,7 +48,7 @@ public class TodoCreateTest {
 	public void shouldRequireTask() {
 		Result<Todo> expected = new Result<>();
 		expected.addMessage("task", "Task is required");
-		Result<Todo> actual = service.createTodo(new Todo(0, 1, null, false));
+		Result<Todo> actual = todoService.createTodo(new Todo(0, 1, null, false));
 		assertEquals(expected, actual);
 	}
 
