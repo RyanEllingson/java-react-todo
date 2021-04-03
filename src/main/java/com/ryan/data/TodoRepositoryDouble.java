@@ -14,7 +14,11 @@ public class TodoRepositoryDouble implements TodoRepository {
 
 	@Override
 	public Todo getTodoById(int todoId) {
-		return null;
+		Todo todo = new Todo();
+		if (todoId == 1) {
+			todo.setTodoId(1);
+		}
+		return todo;
 	}
 
 	@Override
@@ -28,7 +32,7 @@ public class TodoRepositoryDouble implements TodoRepository {
 
 	@Override
 	public int updateTodo(Todo todo) {
-		return 0;
+		return 1;
 	}
 
 	@Override
