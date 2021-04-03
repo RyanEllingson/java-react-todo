@@ -1,5 +1,6 @@
 package com.ryan.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ryan.models.Todo;
@@ -18,7 +19,11 @@ public class TodoRepositoryDouble implements TodoRepository {
 
 	@Override
 	public List<Todo> getTodosByUser(int userId) {
-		return null;
+		List<Todo> todos = new ArrayList<>();
+		if (userId == 1) {
+			todos.add(new Todo(1, 1, "test todo", true));
+		}
+		return todos;
 	}
 
 	@Override
