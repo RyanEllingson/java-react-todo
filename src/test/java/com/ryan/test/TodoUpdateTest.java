@@ -11,7 +11,7 @@ import com.ryan.models.Result;
 import com.ryan.models.Todo;
 import com.ryan.service.TodoService;
 
-public class TodoCreateTest {
+public class TodoUpdateTest {
 	private static TodoService todoService;
 	
 	@BeforeClass
@@ -20,11 +20,27 @@ public class TodoCreateTest {
 	}
 	
 	@Test
-	public void shouldCreateTodo() {
-		Todo todo = new Todo(0, 1, "feed the fish", false);
+	public void shouldUpdateTodo() {
+		Todo todo = new Todo(1, 1, "blabla", false);
 		Result<Todo> expected = new Result<>();
 		expected.setPayload(todo);
-		Result<Todo> actual = todoService.createTodo(todo);
+		Result<Todo> actual = todoService.updateTodo(todo);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void shouldRequireTodoId() {
+		Result<Todo> expected = new Result<>();
+		expected.addMessage("todo", "Todo ID is required");
+		Result<Todo> actual = todoService.updateTodo(new Todo(0, 1, "test todo", true));
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void shouldNotSetNonExistingTodoId() {
+		Result<Todo> expected = new Result<>();
+		expected.addMessage("todo", "Todo not found");
+		Result<Todo> actual = todoService.updateTodo(new Todo(2, 1, "do something", false));
 		assertEquals(expected, actual);
 	}
 	
@@ -32,15 +48,15 @@ public class TodoCreateTest {
 	public void shouldRequireUserId() {
 		Result<Todo> expected = new Result<>();
 		expected.addMessage("user", "User is required");
-		Result<Todo> actual = todoService.createTodo(new Todo(0, 0, "milk the chickens", true));
+		Result<Todo> actual = todoService.updateTodo(new Todo(1, 0, "do pushups", true));
 		assertEquals(expected, actual);
 	}
 	
 	@Test
-	public void shouldNotCreateTodoForNonExistingUser() {
+	public void shouldNotSetNonExistingUserId() {
 		Result<Todo> expected = new Result<>();
 		expected.addMessage("user", "User not found");
-		Result<Todo> actual = todoService.createTodo(new Todo(0, 2, "shave the dog", false));
+		Result<Todo> actual = todoService.updateTodo(new Todo(1, 2, "chop firewood", false));
 		assertEquals(expected, actual);
 	}
 	
@@ -48,15 +64,15 @@ public class TodoCreateTest {
 	public void taskShouldNotBeNull() {
 		Result<Todo> expected = new Result<>();
 		expected.addMessage("task", "Task is required");
-		Result<Todo> actual = todoService.createTodo(new Todo(0, 1, null, false));
+		Result<Todo> actual = todoService.updateTodo(new Todo(1, 1, null, false));
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void taskShouldNotBeBlank() {
 		Result<Todo> expected = new Result<>();
-		expected.addMessage("task",  "Task is required");
-		Result<Todo> actual = todoService.createTodo(new Todo(0, 1, "  ", false));
+		expected.addMessage("task", "Task is required");
+		Result<Todo> actual = todoService.updateTodo(new Todo(1, 1, "  ", true));
 		assertEquals(expected, actual);
 	}
 
