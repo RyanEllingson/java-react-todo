@@ -86,4 +86,17 @@ public class TodoService {
 		}
 		return result;
 	}
+	
+	public Result<Todo> deleteTodo(int todoId) {
+		Result<Todo> result = new Result<>();
+		Todo todo = todoRepo.getTodoById(todoId);
+		if (todo.getTodoId() == 0) {
+			result.addMessage("todoId", "Todo not found");
+		} else if (todoRepo.deleteTodoById(todoId) == 0) {
+			result.addMessage("todoId", "There was a problem deleting todo");
+		} else {
+			result.setPayload(todo);
+		}
+		return result;
+	}
 }

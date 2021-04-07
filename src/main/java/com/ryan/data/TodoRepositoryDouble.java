@@ -37,7 +37,7 @@ public class TodoRepositoryDouble implements TodoRepository {
 
 	@Override
 	public int deleteTodoById(int todoId) {
-		return 0;
+		return 1;
 	}
 
 }
