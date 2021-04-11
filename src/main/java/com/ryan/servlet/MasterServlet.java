@@ -24,4 +24,9 @@ public class MasterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		GetRequestHelper.process(req, res);
 	}
+	
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		PutRequestHelper.process(req, res);
+	}
 }
