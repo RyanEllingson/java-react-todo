@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.ryan.data.TodoRepositoryDouble;
 import com.ryan.data.UserRepositoryDouble;
+import com.ryan.models.Result;
 import com.ryan.models.Todo;
 import com.ryan.service.TodoService;
 
@@ -33,6 +34,22 @@ public class TodoGetTest {
 	public void shouldNotGetTodosForNonExistingUser() {
 		List<Todo> expected = new ArrayList<>();
 		List<Todo> actual = todoService.getTodosByUser(2);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void shouldGetTodoById() {
+		Result<Todo> expected = new Result<>();
+		expected.setPayload(new Todo(1, 1, "test todo", true));
+		Result<Todo> actual = todoService.getTodoById(1);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void shouldNotGetNonExistingTodo() {
+		Result<Todo> expected = new Result<>();
+		expected.addMessage("todoId", "Todo not found");
+		Result<Todo> actual = todoService.getTodoById(2);
 		assertEquals(expected, actual);
 	}
 
