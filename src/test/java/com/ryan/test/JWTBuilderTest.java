@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,7 +39,7 @@ public class JWTBuilderTest {
 		assertEquals("test@test.com", jwtBody.getSubject());
 		Instant expectedExpiration = Instant.now().plus(15, ChronoUnit.MINUTES);
 		long expirationDiffSeconds = jwtBody.getExpiration().toInstant().until(expectedExpiration, ChronoUnit.SECONDS);
-		assertTrue(expirationDiffSeconds < 5L);
+		assertTrue(Math.abs(expirationDiffSeconds) < 5L);
 	}
 
 }
