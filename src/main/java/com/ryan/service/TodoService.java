@@ -46,6 +46,17 @@ public class TodoService {
 		return result;
 	}
 	
+	public Result<Todo> getTodoById(int todoId) {
+		Result<Todo> result = new Result<>();
+		Todo todo = todoRepo.getTodoById(todoId);
+		if (todo.getTodoId() == 0) {
+			result.addMessage("todoId", "Todo not found");
+		} else {
+			result.setPayload(todo);
+		}
+		return result;
+	}
+	
 	public List<Todo> getTodosByUser(int userId) {
 		return todoRepo.getTodosByUser(userId);
 	}
