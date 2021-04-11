@@ -6,6 +6,11 @@ import java.util.List;
 import com.ryan.models.Todo;
 
 public class TodoRepositoryDouble implements TodoRepository {
+	private Todo testTodo;
+	
+	public TodoRepositoryDouble() {
+		testTodo = new Todo(1, 1, "test todo", true);
+	}
 
 	@Override
 	public int createTodo(Todo todo) {
@@ -14,9 +19,11 @@ public class TodoRepositoryDouble implements TodoRepository {
 
 	@Override
 	public Todo getTodoById(int todoId) {
-		Todo todo = new Todo();
+		Todo todo;
 		if (todoId == 1) {
-			todo.setTodoId(1);
+			todo = testTodo;
+		} else {
+			todo = new Todo();
 		}
 		return todo;
 	}
@@ -25,7 +32,7 @@ public class TodoRepositoryDouble implements TodoRepository {
 	public List<Todo> getTodosByUser(int userId) {
 		List<Todo> todos = new ArrayList<>();
 		if (userId == 1) {
-			todos.add(new Todo(1, 1, "test todo", true));
+			todos.add(testTodo);
 		}
 		return todos;
 	}

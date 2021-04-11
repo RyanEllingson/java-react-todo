@@ -22,8 +22,7 @@ public class TodoDeleteTest {
 	@Test
 	public void shouldDeleteTodo() {
 		Result<Todo> expected = new Result<>();
-		Todo todo = new Todo();
-		todo.setTodoId(1);
+		Todo todo = new Todo(1, 1, "test todo", true);
 		expected.setPayload(todo);
 		Result<Todo> actual = todoService.deleteTodo(1);
 		assertEquals(expected, actual);
