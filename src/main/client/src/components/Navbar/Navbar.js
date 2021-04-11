@@ -12,7 +12,7 @@ const Navbar = function() {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light shadow mb-5">
             <div className="container-fluid">
                 <NavLink className="navbar-brand" to="/">Java React Todo</NavLink>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

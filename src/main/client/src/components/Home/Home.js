@@ -1,26 +1,97 @@
-import React, {useEffect, useContext} from "react";
-import {Redirect} from "react-router-dom";
+import React, {useState, useEffect, useContext} from "react";
+import {Redirect, useHistory} from "react-router-dom";
 import axios from "axios";
 import {AuthContext} from "../../auth/auth";
 
 const Home = function() {
-    const {user} = useContext(AuthContext);
+    const [task, setTask] = useState("");
+    const [completed, setCompleted] = useState(false);
+    const [errors, setErrors] = useState({});
+    const {user, logoutUser} = useContext(AuthContext);
+    const history = useHistory();
 
     const renderTodos = function() {
-        console.log("sending todo get request");
-        axios.get("/api/todos");
+        axios.get("/api/todos")
+        .then(function(response) {
+            console.log(response.data);
+        }).catch(function(error) {
+            if (error.response.status === 401) {
+                logoutUser(history);
+            }
+        });
+    };
+
+    const handleChangeTask = function(event) {
+        setTask(event.target.value);
+    }
+
+    const handleChangeCompleted = function() {
+        setCompleted(!completed);
+    }
+
+    const handleSubmit = function(event) {
+        event.preventDefault();
+        const newTodo = {
+            userId: user.userId,
+            task,
+            completed
+        };
+        axios.post("/api/todos", newTodo)
+        .then(function(response) {
+            setErrors({});
+            setTask("");
+            setCompleted(false);
+            renderTodos();
+        }).catch(function(error) {
+            if (error.response.data.messages) {
+                setErrors(error.response.data.messages);
+            }
+        });
     }
 
     useEffect(() => {
-        if (user) {
-            renderTodos();
-        }
+        renderTodos();
         // eslint-disable-next-line
     }, []);
 
     return (
         user
-        ? <h1>{`Welcome ${user.firstName} ${user.lastName}!`}</h1>
+        ? <div className="Home">
+            <div className="container">
+                <div className="row mb-3">
+                    <div className="col-12">
+                        <h1 className="text-center">{`Welcome ${user.firstName} ${user.lastName}!`}</h1>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                        <div className="card shadow">
+                            <div className="card-body">
+                                <h5 className="card-title text-center mb-3">Add a new todo</h5>
+                                <form onSubmit={handleSubmit}>
+                                    {errors.todoId && <div className="alert alert-danger" role="alert">{errors.todoId}</div>}
+                                    {errors.userId && <div className="alert alert-danger" role="alert">{errors.userId}</div>}
+                                    <div className="form-floating mb-1">
+                                        <input type="text" className={`form-control ${errors.task && "is-invalid"}`} id="taskInput" aria-describedby="taskInput" placeholder="example task" name="task" value={task} onChange={handleChangeTask} />
+                                        <label htmlFor="exampleInputEmail1" className="form-label">Todo Description</label>
+                                        {errors.task && <div id="emailHelp" className="form-text text-danger">{errors.task}</div>}
+                                    </div>
+                                    <div className="form-check mb-3">
+                                        <input type="checkbox" className="form-check-input" id="completedInput" name="completed" value="" checked={completed} onChange={handleChangeCompleted} />
+                                        <label htmlFor="completedInput" className="form-check-label">Completed?</label>
+                                    </div>
+                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div className="col-6">
+
+                    </div>
+                </div>
+            </div>
+        </div>
         : <Redirect to="/login" />
     );
 };
