@@ -41,10 +41,13 @@ export const useAuth = function() {
             const token = localStorage.getItem("jwtToken");
             const decoded = jwt_decode(token);
             setUser(decoded);
-            const currentTime = Date.now() / 1000;
-            if (decoded.exp < currentTime) {
-                logoutUser(setUser);
-            }
+            // const currentTime = Date.now() / 1000;
+            // console.log(decoded.exp);
+            // console.log(currentTime);
+            // if (decoded.exp < currentTime) {
+            //     console.log("should be logging out");
+            //     logoutUser(setUser);
+            // }
         }
     }, []);
     return {
