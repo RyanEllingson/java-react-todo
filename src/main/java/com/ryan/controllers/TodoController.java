@@ -125,4 +125,41 @@ public class TodoController {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void deleteTodo(HttpServletRequest req, HttpServletResponse res) {
+		Connection conn = ConnectionFactory.getConnection();
+		TodoService todoService = new TodoService(new TodoDatabaseRepository(conn), new UserDatabaseRepository(conn));
+		String[] params = req.getRequestURI().split("/");
+		try {
+			int todoId = Integer.parseInt(params[3]);
+			Result<Todo> result = todoService.getTodoById(todoId);
+			ObjectMapper om = new ObjectMapper();
+			Jws<Claims> jws = JWTBuilder.parseJWS(req.getHeader("Authorization"));
+			if (jws == null) {
+				res.setStatus(401);
+			} else {
+				int userId = (int) jws.getBody().get("userId");
+				if (!result.isSuccess()) {
+					res.setStatus(400);
+					res.getWriter().write(om.writeValueAsString(result));
+				} else {
+					if (userId != result.getPayload().getUserId()) {
+						res.setStatus(403);
+					} else {
+						Result<Todo> deleteResult = todoService.deleteTodo(todoId);
+						if (deleteResult.isSuccess()) {
+							res.setStatus(200);
+						} else {
+							res.setStatus(400);
+						}
+						res.getWriter().write(om.writeValueAsString(deleteResult));
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			res.setStatus(400);
+		}
+	}
 }

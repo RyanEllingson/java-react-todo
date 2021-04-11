@@ -29,4 +29,9 @@ public class MasterServlet extends HttpServlet {
 	protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		PutRequestHelper.process(req, res);
 	}
+	
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		DeleteRequestHelper.process(req, res);
+	}
 }

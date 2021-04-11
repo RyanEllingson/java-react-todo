@@ -31,7 +31,7 @@ public class JWTBuilder {
 					.setSigningKey(key)
 					.build()
 					.parseClaimsJws(jwsString);
-		} catch (JwtException e) {
+		} catch (JwtException | IllegalArgumentException e) {
 			
 		}
 		return jws;
