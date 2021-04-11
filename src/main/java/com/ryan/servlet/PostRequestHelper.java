@@ -3,6 +3,7 @@ package com.ryan.servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ryan.controllers.TodoController;
 import com.ryan.controllers.UserController;
 
 public class PostRequestHelper {
@@ -13,6 +14,8 @@ public class PostRequestHelper {
 			UserController.register(req, res);
 		} else if (uri.matches("/api/login")) {
 			UserController.login(req, res);
+		} else if (uri.matches("/api/todos")) {
+			TodoController.addTodo(req, res);
 		}
 	}
 }
