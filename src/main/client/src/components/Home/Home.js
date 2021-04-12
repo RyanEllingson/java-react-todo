@@ -31,8 +31,9 @@ const Home = function() {
 
     const handleSubmit = function(event) {
         event.preventDefault();
+        const {userId} = user;
         const newTodo = {
-            userId: user.userId,
+            userId,
             task,
             completed
         };
