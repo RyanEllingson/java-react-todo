@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react";
-import {Redirect, useHistory} from "react-router-dom";
+import {Link, Redirect, useHistory} from "react-router-dom";
 import {AuthContext} from "../../auth/auth";
 
 const Login = function() {
@@ -28,21 +28,23 @@ const Login = function() {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            <div className="card">
+                            <div className="card shadow">
                                 <div className="card-body">
-                                    <form onSubmit={handleSubmit}>
+                                    <h5 className="card-title text-center mb-3">Sign in to your account</h5>
+                                    <form className="mb-3" onSubmit={handleSubmit}>
                                         <div className="form-floating mb-3">
-                                            <input type="email" className={`form-control ${errors.email && "is-invalid"}`} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="name@example.com" name="email" value={inputs.email} onChange={handleInputChange} />
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                                            {errors.email && <div id="emailHelp" className="form-text text-danger">{errors.email}</div>}
+                                            <input type="email" className={`form-control ${errors.email && "is-invalid"}`} id="emailInput" aria-describedby="email" placeholder="name@example.com" name="email" value={inputs.email} onChange={handleInputChange} />
+                                            <label htmlFor="emailInput" className="form-label">Email address</label>
+                                            {errors.email && <div id="emailError" className="form-text text-danger">{errors.email}</div>}
                                         </div>
                                         <div className="form-floating mb-3">
-                                            <input type="password" className={`form-control ${errors.password && "is-invalid"}`} id="exampleInputPassword1" placeholder="password" name="password" value={inputs.password} onChange={handleInputChange} />
-                                            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                                            {errors.password && <div id="emailHelp" className="form-text text-danger">{errors.password}</div>}
+                                            <input type="password" className={`form-control ${errors.password && "is-invalid"}`} id="passwordInput" placeholder="password" aria-describedby="password" name="password" value={inputs.password} onChange={handleInputChange} />
+                                            <label htmlFor="passwordInput" className="form-label">Password</label>
+                                            {errors.password && <div id="passwordError" className="form-text text-danger">{errors.password}</div>}
                                         </div>
                                         <button type="submit" className="btn btn-primary">Submit</button>
                                     </form>
+                                    <p className="card-text">Don't have an account? <Link to="/register">Sign up</Link></p>
                                 </div>
                             </div>
                         </div>
