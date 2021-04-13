@@ -61,7 +61,7 @@ public class TodoDatabaseRepository implements TodoRepository {
 	@Override
 	public List<Todo> getTodosByUser(int userId) {
 		List<Todo> todos = new ArrayList<>();
-		String sql = "select todo_id, user_id, task, completed from todos where user_id = ?";
+		String sql = "select todo_id, user_id, task, completed from todos where user_id = ? order by todo_id asc";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);

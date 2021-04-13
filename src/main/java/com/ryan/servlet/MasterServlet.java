@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(
 		urlPatterns = {
-				"/api/*"
+				"/api/*",
+				"/login",
+				"/register"
 		})
 public class MasterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
