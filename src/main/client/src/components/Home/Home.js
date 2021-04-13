@@ -2,24 +2,57 @@ import React, {useState, useEffect, useContext} from "react";
 import {Redirect, useHistory} from "react-router-dom";
 import axios from "axios";
 import {AuthContext} from "../../auth/auth";
+import TodoCard from "../TodoCard";
 
 const Home = function() {
     const [task, setTask] = useState("");
     const [completed, setCompleted] = useState(false);
     const [errors, setErrors] = useState({});
+    const [todos, setTodos] = useState([]);
     const {user, logoutUser} = useContext(AuthContext);
     const history = useHistory();
 
     const renderTodos = function() {
         axios.get("/api/todos")
         .then(function(response) {
-            console.log(response.data);
+            setTodos(response.data);
         }).catch(function(error) {
             if (error.response.status === 401) {
                 logoutUser(history);
             }
         });
     };
+
+    const deleteTodo = function(todoId) {
+        axios.delete(`/api/todos/${todoId}`)
+        .then(function() {
+            renderTodos();
+        })
+        .catch(function(error) {
+            if (error.response.status === 401) {
+                logoutUser(history);
+            }
+        });
+    }
+
+    const updateTodo = function(todoId, task, completed) {
+        const {userId} = user;
+        const updatedTodo = {
+            todoId,
+            userId,
+            task,
+            completed
+        }
+        axios.put("/api/todos", updatedTodo)
+        .then(function() {
+            renderTodos();
+        })
+        .catch(function(error) {
+            if (error.response.status === 401) {
+                logoutUser(history);
+            }
+        })
+    }
 
     const handleChangeTask = function(event) {
         setTask(event.target.value);
@@ -85,10 +118,15 @@ const Home = function() {
                                 </form>
                             </div>
                         </div>
-                        
                     </div>
                     <div className="col-6">
-
+                        {todos.map(todo => {
+                            return <div className="row mb-3" key={todo.todoId}>
+                                <div className="col-12">
+                                    <TodoCard task={todo.task} completed={todo.completed} todoId={todo.todoId} deleteTodo={deleteTodo} updateTodo={updateTodo} />
+                                </div>
+                            </div>
+                        })}
                     </div>
                 </div>
             </div>
