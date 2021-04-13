@@ -27,7 +27,7 @@ public class TodoService {
 				result.addMessage("user", "User not found");
 			}
 		}
-		if (todo.getTask() == null || todo.getTask().isBlank()) {
+		if (todo.getTask() == null || todo.getTask().trim().isEmpty()) {
 			result.addMessage("task", "Task is required");
 		}
 		return result;
@@ -79,7 +79,7 @@ public class TodoService {
 				result.addMessage("user", "User not found");
 			}
 		}
-		if (todo.getTask() == null || todo.getTask().isBlank()) {
+		if (todo.getTask() == null || todo.getTask().trim().isEmpty()) {
 			result.addMessage("task", "Task is required");
 		}
 		return result;

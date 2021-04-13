@@ -15,7 +15,7 @@ public class UserService {
 	
 	private Result<User> validateRegistration(User user) {
 		Result<User> result = new Result<>();
-		if (user.getEmail() == null || user.getEmail().isBlank()) {
+		if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
 			result.addMessage("email", "Email is required");
 		} else {
 			User sameEmail = userRepo.getUserByEmail(user.getEmail());
@@ -23,13 +23,13 @@ public class UserService {
 				result.addMessage("email", "Email already in use");
 			}
 		}
-		if (user.getPassword() == null || user.getPassword().isBlank()) {
+		if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
 			result.addMessage("password", "Password is required");
 		}
-		if (user.getFirstName() == null || user.getFirstName().isBlank()) {
+		if (user.getFirstName() == null || user.getFirstName().trim().isEmpty()) {
 			result.addMessage("firstName", "First name is required");
 		}
-		if (user.getLastName() == null || user.getLastName().isBlank()) {
+		if (user.getLastName() == null || user.getLastName().trim().isEmpty()) {
 			result.addMessage("lastName", "Last name is required");
 		}
 		return result;
@@ -51,10 +51,10 @@ public class UserService {
 	
 	private Result<User> validateLogin(User user) {
 		Result<User> result = new Result<>();
-		if (user.getEmail() == null || user.getEmail().isBlank()) {
+		if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
 			result.addMessage("email", "Email is required");
 		}
-		if (user.getPassword() == null || user.getPassword().isBlank()) {
+		if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
 			result.addMessage("password", "Password is required");
 		}
 		return result;
