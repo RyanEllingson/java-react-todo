@@ -25,9 +25,8 @@ public class ConnectionFactory {
 	
 	private static void configure() {
 		if (environment == null) {
-			setEnvironment(Environment.DEVELOPMENT);
+			setEnvironment(Environment.PRODUCTION);
 		}
-		
 		try {
 			String username = null;
 			String password = null;
@@ -39,7 +38,6 @@ public class ConnectionFactory {
 			switch(environment) {
 			case PRODUCTION:
 				dbUri = new URI(System.getenv("DATABASE_URL"));
-				
 				username = dbUri.getUserInfo().split(":")[0];
 				password = dbUri.getUserInfo().split(":")[1];
 				dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
