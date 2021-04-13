@@ -1,5 +1,9 @@
 package com.ryan.servlet;
 
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +15,20 @@ public class GetRequestHelper {
 		String uri = req.getRequestURI();
 		if (uri.matches("/api/todos")) {
 			TodoController.getTodos(req, res);
+		} else if (uri.matches("/login")) {
+			try {
+				RequestDispatcher redir = req.getRequestDispatcher("/index.html");
+				redir.forward(req, res);
+			} catch (IOException | ServletException e) {
+				e.printStackTrace();
+			}
+		} else if (uri.matches("/register")) {
+			try {
+				RequestDispatcher redir = req.getRequestDispatcher("/index.html");
+				redir.forward(req, res);
+			} catch (IOException | ServletException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
