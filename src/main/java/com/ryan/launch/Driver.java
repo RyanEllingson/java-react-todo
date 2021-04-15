@@ -1,7 +1,14 @@
 package com.ryan.launch;
 
 import java.io.File;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 
 import org.apache.catalina.LifecycleException;
@@ -10,9 +17,6 @@ import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
-
-import com.ryan.util.ConnectionFactory;
-import com.ryan.util.Environment;
 
 public class Driver {
 
