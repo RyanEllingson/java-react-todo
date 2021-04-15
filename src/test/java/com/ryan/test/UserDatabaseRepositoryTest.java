@@ -28,7 +28,7 @@ public class UserDatabaseRepositoryTest {
 	
 	@Test
 	public void shouldCreateUser() {
-		User user = new User(0, "Tester", "Testeroo", "test2@test.com", "password2");
+		User user = new User(0, "Tester", "Testeroo", "test2@test.com", "password2", "resetCode");
 		int insertId = userRepo.createUser(user);
 		assertEquals(3, insertId);
 		user.setUserId(insertId);
@@ -38,7 +38,7 @@ public class UserDatabaseRepositoryTest {
 	
 	@Test
 	public void shouldGetUserById() {
-		User expected = new User(1, "Testy", "Testerson", "test@test.com", "password");
+		User expected = new User(1, "Testy", "Testerson", "test@test.com", "password", null);
 		User actual = userRepo.getUserById(1);
 		assertEquals(expected, actual);
 	}
@@ -52,7 +52,7 @@ public class UserDatabaseRepositoryTest {
 	
 	@Test
 	public void shouldGetUserByEmail() {
-		User expected = new User(1, "Testy", "Testerson", "test@test.com", "password");
+		User expected = new User(1, "Testy", "Testerson", "test@test.com", "password", null);
 		User actual = userRepo.getUserByEmail("test@test.com");
 		assertEquals(expected, actual);
 	}
@@ -66,7 +66,7 @@ public class UserDatabaseRepositoryTest {
 	
 	@Test
 	public void shouldUpdateUser() {
-		User user = new User(1, "Testus", "Testensen", "testbla@test.com", "betterpassword");
+		User user = new User(1, "Testus", "Testensen", "testbla@test.com", "betterpassword", "testResetCode");
 		int affectedRows = userRepo.updateUser(user);
 		assertEquals(1, affectedRows);
 		User updatedUser = userRepo.getUserById(1);
@@ -75,7 +75,7 @@ public class UserDatabaseRepositoryTest {
 	
 	@Test
 	public void shouldNotUpdateNonExistingUser() {
-		User user = new User(3, "Testus", "Testensen", "testbla@test.com", "betterpassword");
+		User user = new User(3, "Testus", "Testensen", "testbla@test.com", "betterpassword", "testResetCode");
 		int affectedRows = userRepo.updateUser(user);
 		assertEquals(0, affectedRows);
 	}
