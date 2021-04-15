@@ -1,11 +1,16 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {Link, Redirect, useHistory} from "react-router-dom";
 import {AuthContext} from "../../auth/auth";
 
 const Register = function() {
     const [inputs, setInputs] = useState({firstName: "", lastName: "", email: "", password: "", confirmPassword: ""});
-    const {user, errors, registerUser} = useContext(AuthContext);
+    const {user, errors, registerUser, resetErrors} = useContext(AuthContext);
     const history = useHistory();
+
+    useEffect(() => {
+        resetErrors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleInputChange = function(event) {
         setInputs(curState => {

@@ -55,6 +55,12 @@ const registerUser = function(setUser, setErrors) {
     });
 }
 
+const resetErrors = function(setErrors) {
+    return function() {
+        setErrors({});
+    };
+}
+
 const useAuth = function() {
     const [user, setUser] = useState(null);
     const [errors, setErrors] = useState({});
@@ -70,16 +76,17 @@ const useAuth = function() {
         errors,
         registerUser: registerUser(setUser, setErrors),
         loginUser: loginUser(setUser, setErrors),
-        logoutUser: logoutUser(setUser)
+        logoutUser: logoutUser(setUser),
+        resetErrors: resetErrors(setErrors)
     };
 }
 
 export const Auth = function({children}) {
-    const {user, errors, loginUser, logoutUser, registerUser} = useAuth();
+    const {user, errors, loginUser, logoutUser, registerUser, resetErrors} = useAuth();
 
     return (
         <AuthContext.Provider
-            value={{user, errors, loginUser, logoutUser, registerUser}}>
+            value={{user, errors, loginUser, logoutUser, registerUser, resetErrors}}>
             {children}
         </AuthContext.Provider>
     );
