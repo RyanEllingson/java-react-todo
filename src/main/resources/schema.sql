@@ -4,6 +4,7 @@ create table users(
     last_name varchar(30) not null,
     email varchar(30) unique not null,
     password varchar(255) not null,
+    reset_code varchar(255),
     primary key (user_id)
 );
 
