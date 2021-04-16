@@ -123,7 +123,7 @@ public class UserService {
 		Result<User> result = validateUpdate(updatedUser);
 		if (result.isSuccess()) {
 			updatedUser.setPassword(HashGenerator.hashPassword(user.getPassword()));
-			if (userRepo.updateUser(user) < 1) {
+			if (userRepo.updateUser(updatedUser) < 1) {
 				result.addMessage("userId", "Unable to update password");
 			} else {
 				result.setPayload(updatedUser);
