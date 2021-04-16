@@ -1,6 +1,7 @@
 package com.ryan.controllers;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
@@ -121,11 +122,16 @@ public class UserController {
 				if (userId != user.getUserId()) {
 					res.setStatus(403);
 				} else {
-					Result<User> result = userService.updateInfo(user);
-					if (result.isSuccess()) {
+					Result<User> userResult = userService.updateInfo(user);
+					Result<String> result = new Result<>();
+					if (userResult.isSuccess()) {
 						res.setStatus(200);
+						result.setPayload(JWTBuilder.buildJWT(userResult.getPayload()));
 					} else {
 						res.setStatus(400);
+						for (Map.Entry<String, String> entry : userResult.getMessages().entrySet()) {
+							result.addMessage(entry.getKey(), entry.getValue());
+						}
 					}
 					res.getWriter().write(om.writeValueAsString(result));
 				}
@@ -152,18 +158,23 @@ public class UserController {
 				if (userIdNode != null && !(userIdNode instanceof NullNode)) {
 					user.setUserId(userIdNode.asInt());
 				}
-				if (passwordNode != null && !(userIdNode instanceof NullNode)) {
+				if (passwordNode != null && !(passwordNode instanceof NullNode)) {
 					user.setPassword(passwordNode.asText());
 				}
 				int userId = (int) jws.getBody().get("userId");
 				if (userId != user.getUserId()) {
 					res.setStatus(403);
 				} else {
-					Result<User> result = userService.updatePassword(user);
-					if (result.isSuccess()) {
+					Result<User> userResult = userService.updatePassword(user);
+					Result<String> result = new Result<>();
+					if (userResult.isSuccess()) {
 						res.setStatus(200);
+						result.setPayload(JWTBuilder.buildJWT(userResult.getPayload()));
 					} else {
 						res.setStatus(400);
+						for (Map.Entry<String, String> entry : userResult.getMessages().entrySet()) {
+							result.addMessage(entry.getKey(), entry.getValue());
+						}
 					}
 					res.getWriter().write(om.writeValueAsString(result));
 				}
