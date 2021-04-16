@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ryan.controllers.TodoController;
+import com.ryan.controllers.UserController;
 
 public class PutRequestHelper {
 	
@@ -11,6 +12,8 @@ public class PutRequestHelper {
 		String uri = req.getRequestURI();
 		if (uri.matches("/api/todos")) {
 			TodoController.updateTodo(req, res);
+		} else if (uri.matches("/api/users/info")) {
+			UserController.updateUserInfo(req, res);
 		}
 	}
 }
