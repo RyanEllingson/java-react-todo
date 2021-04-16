@@ -77,5 +77,59 @@ public class UserService {
 		}
 		return result;
 	}
+	
+	private Result<User> validateUpdate(User user) {
+		Result<User> result = new Result<>();
+		if (userRepo.getUserById(user.getUserId()).getUserId() == 0) {
+			result.addMessage("userId", "User not found");
+		} else {
+			if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+				result.addMessage("password", "Password is required");
+			}
+			if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+				result.addMessage("email", "Email is required");
+			} else {
+				User sameEmail = userRepo.getUserByEmail(user.getEmail());
+				if (sameEmail.getUserId() != 0 && sameEmail.getUserId() != user.getUserId()) {
+					result.addMessage("email", "Email already in use");
+				}
+			}
+			if (user.getFirstName() == null || user.getFirstName().trim().isEmpty()) {
+				result.addMessage("firstName", "First name is required");
+			}
+			if (user.getLastName() == null || user.getLastName().trim().isEmpty()) {
+				result.addMessage("lastName", "Last name is required");
+			}
+		}
+		return result;
+	}
+	
+	public Result<User> updateInfo(User user) {
+		user.setPassword(userRepo.getUserById(user.getUserId()).getPassword());
+		Result<User> result = validateUpdate(user);
+		if (result.isSuccess()) {
+			if (userRepo.updateUser(user) < 1) {
+				result.addMessage("userId", "Unable to update user information");
+			} else {
+				result.setPayload(user);
+			}
+		}
+		return result;
+	}
+	
+	public Result<User> updatePassword(User user) {
+		User updatedUser = userRepo.getUserById(user.getUserId());
+		updatedUser.setPassword(user.getPassword());
+		Result<User> result = validateUpdate(updatedUser);
+		if (result.isSuccess()) {
+			updatedUser.setPassword(HashGenerator.hashPassword(user.getPassword()));
+			if (userRepo.updateUser(user) < 1) {
+				result.addMessage("userId", "Unable to update password");
+			} else {
+				result.setPayload(updatedUser);
+			}
+		}
+		return result;
+	}
 
 }
