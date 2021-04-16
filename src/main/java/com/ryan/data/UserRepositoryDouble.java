@@ -4,6 +4,7 @@ import com.ryan.models.User;
 import com.ryan.util.HashGenerator;
 
 public class UserRepositoryDouble implements UserRepository {
+	private User repoUser = new User(1, "Test", "Testeroo", "test@test.com", HashGenerator.hashPassword("password"), null);
 
 	@Override
 	public int createUser(User user) {
@@ -14,7 +15,7 @@ public class UserRepositoryDouble implements UserRepository {
 	public User getUserById(int userId) {
 		User user = new User();
 		if (userId == 1) {
-			user.setUserId(1);
+			user = repoUser;
 		}
 		return user;
 	}
@@ -23,18 +24,20 @@ public class UserRepositoryDouble implements UserRepository {
 	public User getUserByEmail(String email) {
 		User user = new User();
 		if (email.equals("test@test.com")) {
-			user.setUserId(1);
-			user.setFirstName("Test");
-			user.setLastName("Testeroo");
-			user.setEmail("test@test.com");
-			user.setPassword(HashGenerator.hashPassword("password"));
+			user = repoUser;
+		} else if (email.equals("existingEmail@test.com")) {
+			user.setUserId(3);
 		}
 		return user;
 	}
 
 	@Override
 	public int updateUser(User user) {
-		return 0;
+		int affectedRows = 0;
+		if (user.getUserId() == 1) {
+			affectedRows = 1;
+		}
+		return affectedRows;
 	}
 
 	@Override
