@@ -109,7 +109,8 @@ public class TodoController {
 					todo.setCompleted(completedNode.asBoolean());
 				}
 				int userId = (int) jws.getBody().get("userId");
-				if (userId != todo.getUserId()) {
+				Result<Todo> existingTodoResult = todoService.getTodoById(todo.getTodoId());
+				if (existingTodoResult.isSuccess() && userId != existingTodoResult.getPayload().getUserId()) {
 					res.setStatus(403);
 				} else {
 					Result<Todo> result = todoService.updateTodo(todo);
@@ -123,6 +124,8 @@ public class TodoController {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			res.setStatus(400);
 		}
 	}
 	

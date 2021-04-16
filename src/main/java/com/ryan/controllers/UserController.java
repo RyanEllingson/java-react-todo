@@ -16,11 +16,14 @@ import com.ryan.service.UserService;
 import com.ryan.util.ConnectionFactory;
 import com.ryan.util.JWTBuilder;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+
 public class UserController {
 
 	public static void register(HttpServletRequest req, HttpServletResponse res) {
 		try {
-			UserService service = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
+			UserService userService = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jsonNode = om.readTree(req.getReader());
 			JsonNode firstNameNode = jsonNode.get("firstName");
@@ -40,7 +43,7 @@ public class UserController {
 			if (passwordNode != null && !(passwordNode instanceof NullNode)) {
 				user.setPassword(passwordNode.asText());
 			}
-			Result<User> userResult = service.register(user);
+			Result<User> userResult = userService.register(user);
 			Result<String> result = new Result<>();
 			if (userResult.isSuccess()) {
 				result.setPayload(JWTBuilder.buildJWT(userResult.getPayload()));
@@ -59,7 +62,7 @@ public class UserController {
 	
 	public static void login(HttpServletRequest req, HttpServletResponse res) {
 		try {
-			UserService service = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
+			UserService userService = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jsonNode = om.readTree(req.getReader());
 			JsonNode emailNode = jsonNode.get("email");
@@ -71,7 +74,7 @@ public class UserController {
 			if (passwordNode != null && !(passwordNode instanceof NullNode)) {
 				user.setPassword(passwordNode.asText());
 			}
-			Result<User> userResult = service.login(user);
+			Result<User> userResult = userService.login(user);
 			Result<String> result = new Result<>();
 			if (userResult.isSuccess()) {
 				result.setPayload(JWTBuilder.buildJWT(userResult.getPayload()));
@@ -85,6 +88,52 @@ public class UserController {
 			res.getWriter().write(om.writeValueAsString(result));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static void updateUserInfo(HttpServletRequest req, HttpServletResponse res) {
+		try {
+			UserService userService = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
+			ObjectMapper om = new ObjectMapper();
+			JsonNode jsonNode = om.readTree(req.getReader());
+			JsonNode userIdNode = jsonNode.get("userId");
+			JsonNode firstNameNode = jsonNode.get("firstName");
+			JsonNode lastNameNode = jsonNode.get("lastName");
+			JsonNode emailNode = jsonNode.get("email");
+			Jws<Claims> jws = JWTBuilder.parseJWS(req.getHeader("Authorization"));
+			if (jws == null) {
+				res.setStatus(401);
+			} else {
+				User user = new User();
+				if (userIdNode != null && !(userIdNode instanceof NullNode)) {
+					user.setUserId(userIdNode.asInt());
+				}
+				if (firstNameNode != null && !(firstNameNode instanceof NullNode)) {
+					user.setFirstName(firstNameNode.asText());
+				}
+				if (lastNameNode != null && !(lastNameNode instanceof NullNode)) {
+					user.setLastName(lastNameNode.asText());
+				}
+				if (emailNode != null && !(emailNode instanceof NullNode)) {
+					user.setEmail(emailNode.asText());
+				}
+				int userId = (int) jws.getBody().get("userId");
+				if (userId != user.getUserId()) {
+					res.setStatus(403);
+				} else {
+					Result<User> result = userService.updateInfo(user);
+					if (result.isSuccess()) {
+						res.setStatus(200);
+					} else {
+						res.setStatus(400);
+					}
+					res.getWriter().write(om.writeValueAsString(result));
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			res.setStatus(400);
 		}
 	}
 }
