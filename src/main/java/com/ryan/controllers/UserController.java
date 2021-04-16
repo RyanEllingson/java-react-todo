@@ -136,4 +136,42 @@ public class UserController {
 			res.setStatus(400);
 		}
 	}
+	
+	public static void updatePassword(HttpServletRequest req, HttpServletResponse res) {
+		try {
+			UserService userService = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
+			ObjectMapper om = new ObjectMapper();
+			JsonNode jsonNode = om.readTree(req.getReader());
+			JsonNode userIdNode = jsonNode.get("userId");
+			JsonNode passwordNode = jsonNode.get("password");
+			Jws<Claims> jws = JWTBuilder.parseJWS(req.getHeader("Authorization"));
+			if (jws == null) {
+				res.setStatus(401);
+			} else {
+				User user = new User();
+				if (userIdNode != null && !(userIdNode instanceof NullNode)) {
+					user.setUserId(userIdNode.asInt());
+				}
+				if (passwordNode != null && !(userIdNode instanceof NullNode)) {
+					user.setPassword(passwordNode.asText());
+				}
+				int userId = (int) jws.getBody().get("userId");
+				if (userId != user.getUserId()) {
+					res.setStatus(403);
+				} else {
+					Result<User> result = userService.updatePassword(user);
+					if (result.isSuccess()) {
+						res.setStatus(200);
+					} else {
+						res.setStatus(400);
+					}
+					res.getWriter().write(om.writeValueAsString(result));
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			res.setStatus(400);
+		}
+	}
 }

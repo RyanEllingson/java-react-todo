@@ -14,6 +14,8 @@ public class PutRequestHelper {
 			TodoController.updateTodo(req, res);
 		} else if (uri.matches("/api/users/info")) {
 			UserController.updateUserInfo(req, res);
+		} else if (uri.matches("/api/users/password")) {
+			UserController.updatePassword(req, res);
 		}
 	}
 }
