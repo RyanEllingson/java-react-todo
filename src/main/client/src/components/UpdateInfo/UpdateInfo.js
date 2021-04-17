@@ -25,7 +25,7 @@ const UpdateInfo = function() {
         event.preventDefault();
         const {userId} = user;
         updateUserInfo({...inputs, userId}, history);
-    }
+    };
 
     return (
         user

@@ -69,11 +69,37 @@ const updateUserInfo = function(setUser, setErrors) {
         })
         .catch(function(error) {
             if (error.response.status === 401) {
-                logoutUser(history);
+                logoutUser(setUser)(history);
             } else if (error.response.data.messages) {
                 setErrors(error.response.data.messages);
             }
         });
+    }
+}
+
+const updatePassword = function(setUser, setErrors) {
+    return function(userData, history) {
+        if (userData.password !== userData.confirmPassword) {
+            setErrors({confirmPassword: "Confirm password must match password"});
+        } else {
+            axios.put("/api/users/password", userData)
+            .then(function(response) {
+                setErrors({});
+                const token = response.data.payload;
+                localStorage.setItem("jwtToken", token);
+                setAuthToken(token);
+                const decoded = jwt_decode(token);
+                setUser(decoded);
+                history.push("/");
+            })
+            .catch(function(error) {
+                if (error.response.status === 401) {
+                    logoutUser(setUser)(history);
+                } else if (error.response.data.messages) {
+                    setErrors(error.response.data.messages);
+                }
+            });
+        }
     }
 }
 
@@ -100,16 +126,17 @@ const useAuth = function() {
         loginUser: loginUser(setUser, setErrors),
         logoutUser: logoutUser(setUser),
         updateUserInfo: updateUserInfo(setUser, setErrors),
+        updatePassword: updatePassword(setUser, setErrors),
         resetErrors: resetErrors(setErrors)
     };
 }
 
 export const Auth = function({children}) {
-    const {user, errors, loginUser, logoutUser, registerUser, updateUserInfo, resetErrors} = useAuth();
+    const {user, errors, loginUser, logoutUser, registerUser, updateUserInfo, updatePassword, resetErrors} = useAuth();
 
     return (
         <AuthContext.Provider
-            value={{user, errors, loginUser, logoutUser, registerUser, updateUserInfo, resetErrors}}>
+            value={{user, errors, loginUser, logoutUser, registerUser, updateUserInfo, updatePassword, resetErrors}}>
             {children}
         </AuthContext.Provider>
     );
