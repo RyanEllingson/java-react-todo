@@ -27,7 +27,13 @@ const Navbar = function() {
                             <NavLink exact className="nav-link" activeClassName="active" to="/login">Login</NavLink>
                         </li>}
                         {user && <li className="nav-item">
+                            <NavLink exact className="nav-link" activeClassName="active" to="/">Home</NavLink>    
+                        </li>}
+                        {user && <li className="nav-item">
                             <NavLink exact className="nav-link" activeClassName="active" to="/update/info">Update Info</NavLink>    
+                        </li>}
+                        {user && <li className="nav-item">
+                            <NavLink exact className="nav-link" activeClassName="active" to="/update/password">Change Password</NavLink>    
                         </li>}
                         {user && <li className="nav-item">
                             <a className="nav-link" onClick={handleLogout} href="/login">Logout</a>
