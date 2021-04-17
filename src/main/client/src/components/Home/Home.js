@@ -77,7 +77,9 @@ const Home = function() {
             setCompleted(false);
             renderTodos();
         }).catch(function(error) {
-            if (error.response.data.messages) {
+            if (error.response.status === 401) {
+                logoutUser(history);
+            } else if (error.response.data.messages) {
                 setErrors(error.response.data.messages);
             }
         });
