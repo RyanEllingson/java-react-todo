@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import {Link, Redirect, useHistory} from "react-router-dom";
 import {AuthContext} from "../../auth/auth";
+import Form from "../Form";
 
 const Login = function() {
     const [inputs, setInputs] = useState({email: "", password: ""});
@@ -26,38 +27,41 @@ const Login = function() {
         loginUser(inputs, history);
     };
 
+    const fields = [
+        {
+            fieldName: "email",
+            fieldText: "Email address",
+            fieldType: "email"
+        },
+        {
+            fieldName: "password",
+            fieldText: "Password",
+            fieldType: "password"
+        }
+    ];
+
     return (
         user
         ? <Redirect to="/" />
         : <div className="Login">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-12">
-                            <div className="card shadow">
-                                <div className="card-body">
-                                    <h5 className="card-title text-center mb-3">Sign in to your account</h5>
-                                    <form className="mb-3" onSubmit={handleSubmit}>
-                                        <div className="form-floating mb-3">
-                                            <input type="email" className={`form-control ${errors.email && "is-invalid"}`} id="emailInput" aria-describedby="email" placeholder="name@example.com" name="email" value={inputs.email} onChange={handleInputChange} />
-                                            <label htmlFor="emailInput" className="form-label">Email address</label>
-                                            {errors.email && <div id="emailError" className="form-text text-danger">{errors.email}</div>}
-                                        </div>
-                                        <div className="form-floating mb-3">
-                                            <input type="password" className={`form-control ${errors.password && "is-invalid"}`} id="passwordInput" placeholder="password" aria-describedby="password" name="password" value={inputs.password} onChange={handleInputChange} />
-                                            <label htmlFor="passwordInput" className="form-label">Password</label>
-                                            {errors.password && <div id="passwordError" className="form-text text-danger">{errors.password}</div>}
-                                        </div>
-                                        <button type="submit" className="btn btn-primary">Submit</button>
-                                    </form>
-                                    <p className="card-text">Don't have an account? <Link to="/register">Sign up</Link></p>
-                                </div>
-                            </div>
-                        </div>
+            <div className="container">
+                <div className="row">
+                    <div className="col-12">
+                        <Form
+                            title="Sign in to your account"
+                            fields={fields}
+                            inputs={inputs}
+                            inputChangeHandler={handleInputChange}
+                            errors={errors}
+                            submitHandler={handleSubmit}
+                        >
+                            <p className="card-text">Don't have an account? <Link to="/register">Sign up</Link></p>
+                        </Form>
                     </div>
                 </div>
             </div>
-        
+        </div>
     );
-}
+};
 
 export default Login;
