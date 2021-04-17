@@ -68,8 +68,11 @@ const updateUserInfo = function(setUser, setErrors) {
             history.push("/");
         })
         .catch(function(error) {
-            console.log(error.response);
-            // setErrors(error.response.data.messages);
+            if (error.response.status === 401) {
+                logoutUser(history);
+            } else if (error.response.data.messages) {
+                setErrors(error.response.data.messages);
+            }
         });
     }
 }
