@@ -55,6 +55,25 @@ const registerUser = function(setUser, setErrors) {
     });
 }
 
+const updateUserInfo = function(setUser, setErrors) {
+    return function(userData, history) {
+        axios.put("/api/users/info", userData)
+        .then(function(response) {
+            setErrors({});
+            const token = response.data.payload;
+            localStorage.setItem("jwtToken", token);
+            setAuthToken(token);
+            const decoded = jwt_decode(token);
+            setUser(decoded);
+            history.push("/");
+        })
+        .catch(function(error) {
+            console.log(error.response);
+            // setErrors(error.response.data.messages);
+        });
+    }
+}
+
 const resetErrors = function(setErrors) {
     return function() {
         setErrors({});
@@ -77,16 +96,17 @@ const useAuth = function() {
         registerUser: registerUser(setUser, setErrors),
         loginUser: loginUser(setUser, setErrors),
         logoutUser: logoutUser(setUser),
+        updateUserInfo: updateUserInfo(setUser, setErrors),
         resetErrors: resetErrors(setErrors)
     };
 }
 
 export const Auth = function({children}) {
-    const {user, errors, loginUser, logoutUser, registerUser, resetErrors} = useAuth();
+    const {user, errors, loginUser, logoutUser, registerUser, updateUserInfo, resetErrors} = useAuth();
 
     return (
         <AuthContext.Provider
-            value={{user, errors, loginUser, logoutUser, registerUser, resetErrors}}>
+            value={{user, errors, loginUser, logoutUser, registerUser, updateUserInfo, resetErrors}}>
             {children}
         </AuthContext.Provider>
     );

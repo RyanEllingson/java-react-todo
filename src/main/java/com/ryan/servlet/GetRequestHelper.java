@@ -15,14 +15,7 @@ public class GetRequestHelper {
 		String uri = req.getRequestURI();
 		if (uri.matches("/api/todos")) {
 			TodoController.getTodos(req, res);
-		} else if (uri.matches("/login")) {
-			try {
-				RequestDispatcher redir = req.getRequestDispatcher("/index.html");
-				redir.forward(req, res);
-			} catch (IOException | ServletException e) {
-				e.printStackTrace();
-			}
-		} else if (uri.matches("/register")) {
+		} else if (uri.matches("/login") || uri.matches("/register") || uri.matches("/update/(.*)")) {
 			try {
 				RequestDispatcher redir = req.getRequestDispatcher("/index.html");
 				redir.forward(req, res);

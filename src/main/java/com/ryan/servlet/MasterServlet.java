@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 		urlPatterns = {
 				"/api/*",
 				"/login",
-				"/register"
+				"/register",
+				"/update/*"
 		})
 public class MasterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
