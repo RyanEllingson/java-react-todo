@@ -15,7 +15,8 @@ import com.sun.mail.smtp.SMTPTransport;
 
 public class PasswordResetGenerator {
 	
-	public static Result<String> sendResetCode(String email, Result<String> result) {
+	public static Result<String> sendResetCode(String email) {
+		Result<String> result = new Result<>();
 		Properties props = System.getProperties();
 		props.put("mail.smtps.host", System.getenv("MAILGUN_SMTP_SERVER"));
 		props.put("mail.smtps.auth", "true");

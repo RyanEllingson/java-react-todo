@@ -16,6 +16,8 @@ public class PostRequestHelper {
 			UserController.login(req, res);
 		} else if (uri.matches("/api/todos")) {
 			TodoController.addTodo(req, res);
+		} else if (uri.matches("/api/reset")) {
+			UserController.initiatePasswordReset(req, res);
 		}
 	}
 }

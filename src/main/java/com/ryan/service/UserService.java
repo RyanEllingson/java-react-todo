@@ -131,5 +131,20 @@ public class UserService {
 		}
 		return result;
 	}
+	
+	public Result<User> getUserByEmail(String email) {
+		Result<User> result = new Result<>();
+		if (email == null || email.trim().isEmpty()) {
+			result.addMessage("email", "Email is required");
+		} else {
+			User user = userRepo.getUserByEmail(email);
+			if (user.getUserId() == 0) {
+				result.addMessage("email", "Email not found");
+			} else {
+				result.setPayload(user);
+			}
+		}
+		return result;
+	}
 
 }
