@@ -15,7 +15,9 @@ import com.ryan.models.Result;
 import com.ryan.models.User;
 import com.ryan.service.UserService;
 import com.ryan.util.ConnectionFactory;
+import com.ryan.util.HashGenerator;
 import com.ryan.util.JWTBuilder;
+import com.ryan.util.PasswordResetGenerator;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -183,6 +185,42 @@ public class UserController {
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			res.setStatus(400);
+		}
+	}
+	
+	public static void initiatePasswordReset(HttpServletRequest req, HttpServletResponse res) {
+		try {
+			UserService userService = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
+			ObjectMapper om = new ObjectMapper();
+			JsonNode jsonNode = om.readTree(req.getReader());
+			JsonNode emailNode = jsonNode.get("email");
+			String email = null;
+			if (emailNode != null && !(emailNode instanceof NullNode)) {
+				email = emailNode.asText();
+			}
+			Result<User> userResult = userService.getUserByEmail(email);
+			if (userResult.isSuccess()) {
+				Result<String> resetCodeResult = PasswordResetGenerator.sendResetCode(email);
+				if (resetCodeResult.isSuccess()) {
+					User user = userResult.getPayload();
+					user.setResetCode(HashGenerator.hashPassword(resetCodeResult.getPayload()));
+					Result<User> updateResult = userService.updateInfo(user);
+					if (updateResult.isSuccess()) {
+						res.setStatus(200);
+					} else {
+						res.setStatus(400);
+						res.getWriter().write(om.writeValueAsString(updateResult));
+					}
+				} else {
+					res.setStatus(400);
+					res.getWriter().write(om.writeValueAsString(resetCodeResult));
+				}
+			} else {
+				res.setStatus(400);
+				res.getWriter().write(om.writeValueAsString(userResult));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
