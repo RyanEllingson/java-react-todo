@@ -43,7 +43,7 @@ public class PasswordResetGenerator {
 			
 			transport.close();
 		} catch (MessagingException e) {
-			result.addMessage("email", e.getMessage());
+			result.addMessage("email", "There was a problem sending email");
 		}
 		
 		return result;

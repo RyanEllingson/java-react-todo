@@ -146,5 +146,38 @@ public class UserService {
 		}
 		return result;
 	}
+	
+	private Result<User> validateLoginViaEmail(User user) {
+		Result<User> result = new Result<>();
+		if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+			result.addMessage("email", "Email is required");
+		}
+		if (user.getResetCode() == null || user.getResetCode().trim().isEmpty()) {
+			result.addMessage("resetCode", "Reset code is required");
+		}
+		return result;
+	}
+	
+	public Result<User> loginViaEmail(User user) {
+		Result<User> result = validateLoginViaEmail(user);
+		if (result.isSuccess()) {
+			User requestedUser = userRepo.getUserByEmail(user.getEmail());
+			if (requestedUser.getUserId() == 0) {
+				result.addMessage("email", "Email not found");
+			} else {
+				if (requestedUser.getResetCode() == null) {
+					result.addMessage("resetCode", "Incorrect reset code");
+				} else {
+					String[] passwordParams = requestedUser.getResetCode().split("/");
+					if (HashGenerator.comparePasswords(passwordParams[0], user.getResetCode(), passwordParams[1])) {
+						result.setPayload(requestedUser);
+					} else {
+						result.addMessage("resetCode", "Incorrect reset code");
+					}
+				}
+			}
+		}
+		return result;
+	}
 
 }
