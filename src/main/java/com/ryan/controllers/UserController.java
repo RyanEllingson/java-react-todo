@@ -188,7 +188,7 @@ public class UserController {
 		}
 	}
 	
-	public static void initiatePasswordReset(HttpServletRequest req, HttpServletResponse res) {
+	public static void initiateLoginViaEmail(HttpServletRequest req, HttpServletResponse res) {
 		try {
 			UserService userService = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
 			ObjectMapper om = new ObjectMapper();
@@ -223,4 +223,36 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void loginViaEmail(HttpServletRequest req, HttpServletResponse res) {
+		try {
+			UserService userService = new UserService(new UserDatabaseRepository(ConnectionFactory.getConnection()));
+			ObjectMapper om = new ObjectMapper();
+			JsonNode jsonNode = om.readTree(req.getReader());
+			JsonNode emailNode = jsonNode.get("email");
+			JsonNode resetCodeNode = jsonNode.get("resetCode");
+			User user = new User();
+			if (emailNode != null && !(emailNode instanceof NullNode)) {
+				user.setEmail(emailNode.asText());
+			}
+			if (resetCodeNode != null && !(resetCodeNode instanceof NullNode)) {
+				user.setResetCode(resetCodeNode.asText());
+			}
+			Result<User> userResult = userService.loginViaEmail(user);
+			Result<String> result = new Result<>();
+			if (userResult.isSuccess()) {
+				res.setStatus(200);
+				result.setPayload(JWTBuilder.buildJWT(userResult.getPayload()));
+			} else {
+				res.setStatus(400);
+				for (Map.Entry<String, String> entry : userResult.getMessages().entrySet()) {
+					result.addMessage(entry.getKey(), entry.getValue());
+				}
+			}
+			res.getWriter().write(om.writeValueAsString(result));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
