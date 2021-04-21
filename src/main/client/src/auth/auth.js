@@ -19,7 +19,7 @@ const loginUser = function(setUser, setErrors) {
     return (function(userData, history) {
         axios.post("/api/login", userData)
         .then(function(response) {
-            setErrors({})
+            setErrors({});
             const token = response.data.payload;
             localStorage.setItem("jwtToken", token);
             setAuthToken(token);
@@ -31,6 +31,41 @@ const loginUser = function(setUser, setErrors) {
             setErrors(error.response.data.messages);
         });
     });
+};
+
+const initiatePasswordReset = function(setErrors) {
+    return function(userData, setViewResetCodeInput) {
+        axios.post("/api/reset", userData)
+        .then(function() {
+            setErrors({});
+            setViewResetCodeInput(true);
+        })
+        .catch(function(error) {
+            setErrors(error.response.data.messages);
+        });
+    };
+};
+
+const loginUserViaEmail = function(setUser, setErrors) {
+    return function(userData, history) {
+        if (userData.password !== userData.confirmPassword) {
+            setErrors({confirmPassword: "Confirm password must match password"});
+        } else {
+            axios.post("/api/email_login", userData)
+            .then(function(response) {
+                setErrors({});
+                const token = response.data.payload;
+                localStorage.setItem("jwtToken", token);
+                setAuthToken(token);
+                const decoded = jwt_decode(token);
+                setUser(decoded);
+                history.push("/");
+            })
+            .catch(function(error) {
+                setErrors(error.response.data.messages);
+            });
+        }
+    };
 };
 
 const registerUser = function(setUser, setErrors) {
@@ -53,7 +88,7 @@ const registerUser = function(setUser, setErrors) {
             });
         }
     });
-}
+};
 
 const updateUserInfo = function(setUser, setErrors) {
     return function(userData, history) {
@@ -74,8 +109,8 @@ const updateUserInfo = function(setUser, setErrors) {
                 setErrors(error.response.data.messages);
             }
         });
-    }
-}
+    };
+};
 
 const updatePassword = function(setUser, setErrors) {
     return function(userData, history) {
@@ -115,6 +150,7 @@ const useAuth = function() {
     useEffect(() => {
         if (localStorage.getItem("jwtToken")) {
             const token = localStorage.getItem("jwtToken");
+            setAuthToken(token);
             const decoded = jwt_decode(token);
             setUser(decoded);
         }
@@ -124,6 +160,8 @@ const useAuth = function() {
         errors,
         registerUser: registerUser(setUser, setErrors),
         loginUser: loginUser(setUser, setErrors),
+        initiatePasswordReset: initiatePasswordReset(setErrors),
+        loginUserViaEmail: loginUserViaEmail(setUser, setErrors),
         logoutUser: logoutUser(setUser),
         updateUserInfo: updateUserInfo(setUser, setErrors),
         updatePassword: updatePassword(setUser, setErrors),
@@ -132,11 +170,11 @@ const useAuth = function() {
 }
 
 export const Auth = function({children}) {
-    const {user, errors, loginUser, logoutUser, registerUser, updateUserInfo, updatePassword, resetErrors} = useAuth();
+    const {user, errors, loginUser, initiatePasswordReset, loginUserViaEmail, logoutUser, registerUser, updateUserInfo, updatePassword, resetErrors} = useAuth();
 
     return (
         <AuthContext.Provider
-            value={{user, errors, loginUser, logoutUser, registerUser, updateUserInfo, updatePassword, resetErrors}}>
+            value={{user, errors, loginUser, initiatePasswordReset, loginUserViaEmail, logoutUser, registerUser, updateUserInfo, updatePassword, resetErrors}}>
             {children}
         </AuthContext.Provider>
     );

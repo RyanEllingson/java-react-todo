@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 				"/api/*",
 				"/login",
 				"/register",
-				"/update/*"
+				"/update/*",
+				"/reset"
 		})
 public class MasterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

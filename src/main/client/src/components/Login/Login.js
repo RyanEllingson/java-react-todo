@@ -56,6 +56,7 @@ const Login = function() {
                             submitHandler={handleSubmit}
                         >
                             <p className="card-text">Don't have an account? <Link to="/register">Sign up</Link></p>
+                            <p className="card-text">Forgot your password? <Link to="/reset">Login via email</Link></p>
                         </Form>
                     </div>
                 </div>
