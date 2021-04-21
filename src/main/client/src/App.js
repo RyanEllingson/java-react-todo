@@ -7,6 +7,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import UpdateInfo from "./components/UpdateInfo";
 import UpdatePassword from "./components/UpdatePassword";
+import PasswordReset from "./components/PasswordReset";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/reset" component={PasswordReset} />
           <Route exact path="/update/info" component={UpdateInfo} />
           <Route exact path="/update/password" component={UpdatePassword} />
         </Switch>
