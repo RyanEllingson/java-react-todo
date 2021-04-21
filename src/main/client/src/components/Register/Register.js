@@ -5,6 +5,7 @@ import Form from "../Form";
 
 const Register = function() {
     const [inputs, setInputs] = useState({firstName: "", lastName: "", email: "", password: "", confirmPassword: ""});
+    const [isLoading, setIsLoading] = useState(false);
     const {user, errors, registerUser, resetErrors} = useContext(AuthContext);
     const history = useHistory();
 
@@ -24,7 +25,7 @@ const Register = function() {
 
     const handleSubmit = function(event) {
         event.preventDefault();
-        registerUser(inputs, history);
+        registerUser(inputs, history, setIsLoading);
     };
 
     const fields = [
@@ -69,6 +70,7 @@ const Register = function() {
                             inputChangeHandler={handleInputChange}
                             errors={errors}
                             submitHandler={handleSubmit}
+                            isLoading={isLoading}
                         >
                             <p className="card-text">Already have an account? <Link to="/login">Sign in</Link></p>
                         </Form>

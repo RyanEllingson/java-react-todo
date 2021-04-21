@@ -5,6 +5,7 @@ import Form from "../Form";
 
 const Login = function() {
     const [inputs, setInputs] = useState({email: "", password: ""});
+    const [isLoading, setIsLoading] = useState(false);
     const {user, errors, loginUser, resetErrors} = useContext(AuthContext);
     const history = useHistory();
 
@@ -24,7 +25,7 @@ const Login = function() {
 
     const handleSubmit = function(event) {
         event.preventDefault();
-        loginUser(inputs, history);
+        loginUser(inputs, history, setIsLoading);
     };
 
     const fields = [
@@ -54,6 +55,7 @@ const Login = function() {
                             inputChangeHandler={handleInputChange}
                             errors={errors}
                             submitHandler={handleSubmit}
+                            isLoading={isLoading}
                         >
                             <p className="card-text">Don't have an account? <Link to="/register">Sign up</Link></p>
                             <p className="card-text">Forgot your password? <Link to="/reset">Login via email</Link></p>

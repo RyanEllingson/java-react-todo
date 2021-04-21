@@ -6,6 +6,8 @@ import Form from "../Form";
 const PasswordReset = function() {
     const [inputs, setInputs] = useState({email: "", resetCode: ""});
     const [viewResetCodeInput, setViewResetCodeInput] = useState(false);
+    const [initiatePasswordResetIsLoading, setInitiatePasswordResetIsLoading] = useState(false);
+    const [loginViaEmailIsLoading, setLoginViaEmailIsLoading] = useState(false);
     const {user, errors, initiatePasswordReset, loginUserViaEmail} = useContext(AuthContext);
     const history = useHistory();
 
@@ -20,12 +22,12 @@ const PasswordReset = function() {
 
     const handleInitiatePasswordReset = function(event) {
         event.preventDefault();
-        initiatePasswordReset(inputs, setViewResetCodeInput);
+        initiatePasswordReset(inputs, setViewResetCodeInput, setInitiatePasswordResetIsLoading);
     };
 
     const handleLoginUserViaEmail = function(event) {
         event.preventDefault();
-        loginUserViaEmail(inputs, history);
+        loginUserViaEmail(inputs, history, setLoginViaEmailIsLoading);
     }
 
     const emailInputFields = [
@@ -59,6 +61,7 @@ const PasswordReset = function() {
                             inputChangeHandler={handleInputChange}
                             errors={errors}
                             submitHandler={handleLoginUserViaEmail}
+                            isLoading={loginViaEmailIsLoading}
                         />
                         : <Form
                             title="Email a reset code"
@@ -67,6 +70,7 @@ const PasswordReset = function() {
                             inputChangeHandler={handleInputChange}
                             errors={errors}
                             submitHandler={handleInitiatePasswordReset}
+                            isLoading={initiatePasswordResetIsLoading}
                         />}
                     </div>
                 </div>
