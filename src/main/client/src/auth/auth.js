@@ -16,9 +16,11 @@ const logoutUser = function(setUser) {
 }
 
 const loginUser = function(setUser, setErrors) {
-    return (function(userData, history) {
+    return (function(userData, history, setIsLoading) {
+        setIsLoading(true);
         axios.post("/api/login", userData)
         .then(function(response) {
+            setIsLoading(false);
             setErrors({});
             const token = response.data.payload;
             localStorage.setItem("jwtToken", token);
@@ -28,29 +30,34 @@ const loginUser = function(setUser, setErrors) {
             history.push("/");
         })
         .catch(function(error) {
+            setIsLoading(false);
             setErrors(error.response.data.messages);
         });
     });
 };
 
 const initiatePasswordReset = function(setErrors) {
-    return function(userData, setViewResetCodeInput) {
+    return function(userData, setViewResetCodeInput, setInitiatePasswordResetIsLoading) {
+        setInitiatePasswordResetIsLoading(true);
         axios.post("/api/reset", userData)
         .then(function() {
             setErrors({});
+            setInitiatePasswordResetIsLoading(false);
             setViewResetCodeInput(true);
         })
         .catch(function(error) {
             setErrors(error.response.data.messages);
+            setInitiatePasswordResetIsLoading(false);
         });
     };
 };
 
 const loginUserViaEmail = function(setUser, setErrors) {
-    return function(userData, history) {
+    return function(userData, history, setLoginViaEmailIsLoading) {
         if (userData.password !== userData.confirmPassword) {
             setErrors({confirmPassword: "Confirm password must match password"});
         } else {
+            setLoginViaEmailIsLoading(true);
             axios.post("/api/email_login", userData)
             .then(function(response) {
                 setErrors({});
@@ -60,21 +67,25 @@ const loginUserViaEmail = function(setUser, setErrors) {
                 const decoded = jwt_decode(token);
                 setUser(decoded);
                 history.push("/");
+                setLoginViaEmailIsLoading(false);
             })
             .catch(function(error) {
                 setErrors(error.response.data.messages);
+                setLoginViaEmailIsLoading(false);
             });
         }
     };
 };
 
 const registerUser = function(setUser, setErrors) {
-    return (function(userData, history) {
+    return (function(userData, history, setIsLoading) {
         if (userData.password !== userData.confirmPassword) {
             setErrors({confirmPassword: "Confirm password must match password"});
         } else {
+            setIsLoading(true);
             axios.post("/api/register", userData)
             .then(function(response) {
+                setIsLoading(false);
                 setErrors({});
                 const token = response.data.payload;
                 localStorage.setItem("jwtToken", token);
@@ -84,6 +95,7 @@ const registerUser = function(setUser, setErrors) {
                 history.push("/");
             })
             .catch(function(error) {
+                setIsLoading(false);
                 setErrors(error.response.data.messages);
             });
         }
@@ -91,9 +103,11 @@ const registerUser = function(setUser, setErrors) {
 };
 
 const updateUserInfo = function(setUser, setErrors) {
-    return function(userData, history) {
+    return function(userData, history, setIsLoading) {
+        setIsLoading(true);
         axios.put("/api/users/info", userData)
         .then(function(response) {
+            setIsLoading(false);
             setErrors({});
             const token = response.data.payload;
             localStorage.setItem("jwtToken", token);
@@ -103,6 +117,7 @@ const updateUserInfo = function(setUser, setErrors) {
             history.push("/");
         })
         .catch(function(error) {
+            setIsLoading(false);
             if (error.response.status === 401) {
                 logoutUser(setUser)(history);
             } else if (error.response.data.messages) {
@@ -113,12 +128,14 @@ const updateUserInfo = function(setUser, setErrors) {
 };
 
 const updatePassword = function(setUser, setErrors) {
-    return function(userData, history) {
+    return function(userData, history, setIsLoading) {
         if (userData.password !== userData.confirmPassword) {
             setErrors({confirmPassword: "Confirm password must match password"});
         } else {
+            setIsLoading(true);
             axios.put("/api/users/password", userData)
             .then(function(response) {
+                setIsLoading(false);
                 setErrors({});
                 const token = response.data.payload;
                 localStorage.setItem("jwtToken", token);
@@ -128,6 +145,7 @@ const updatePassword = function(setUser, setErrors) {
                 history.push("/");
             })
             .catch(function(error) {
+                setIsLoading(false);
                 if (error.response.status === 401) {
                     logoutUser(setUser)(history);
                 } else if (error.response.data.messages) {

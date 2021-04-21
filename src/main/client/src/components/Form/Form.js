@@ -1,6 +1,6 @@
 import React from "react";
 
-const Form = function({title, fields, inputs, inputChangeHandler, errors, submitHandler, children}) {
+const Form = function({title, fields, inputs, inputChangeHandler, errors, submitHandler, isLoading, children}) {
     return (
         <div className="Form">
             <div className="card shadow mb-5">
@@ -15,7 +15,12 @@ const Form = function({title, fields, inputs, inputChangeHandler, errors, submit
                                 {errors[fieldName] && <div id={`${fieldName}Error`} className="form-text text-danger">{errors[fieldName]}</div>}
                             </div>);
                         })}
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        {isLoading
+                        ? <button className="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </button>
+                        : <button type="submit" className="btn btn-primary">Submit</button>}
                     </form>
                     {children}
                 </div>

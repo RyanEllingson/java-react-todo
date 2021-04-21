@@ -6,6 +6,7 @@ import Form from "../Form";
 const UpdatePassword = function() {
     const {user, errors, updatePassword, resetErrors} = useContext(AuthContext);
     const [inputs, setInputs] = useState({password: "", confirmPassword: ""});
+    const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
@@ -25,7 +26,7 @@ const UpdatePassword = function() {
     const handleSubmit = function(event) {
         event.preventDefault();
         const {userId} = user;
-        updatePassword({...inputs, userId}, history)
+        updatePassword({...inputs, userId}, history, setIsLoading)
     };
 
     const fields = [
@@ -54,6 +55,7 @@ const UpdatePassword = function() {
                             inputChangeHandler={handleInputChange}
                             errors={errors}
                             submitHandler={handleSubmit}
+                            isLoading={isLoading}
                         />
                     </div>
                 </div>
