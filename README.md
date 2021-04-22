@@ -10,53 +10,53 @@ This is a todo-list application with a React front end and a Java back end inter
 
 Upon loading the app, the user is sent to the Login page.  Here they are presented with a form asking for the email address and password associated with their account.
 
-![screenshot 1](src/main/resources/Screenshot1.jpg)
+![screenshot 1](src/main/resources/Screenshot1.JPG)
 
 If the user enters invalid information in the form, the server will respond with error messages, which are displayed to the user beneath the appropriate form fields.
 
-![screenshot 2](src/main/resources/Screenshot2.jpg)
+![screenshot 2](src/main/resources/Screenshot2.JPG)
 
 If the user does not yet have an account, they can navigate to the Register page by either clicking on the link at the bottom of the login form, or clicking on the Register link in the navbar.  Here the user will be presented with a form asking for information required to create a new account.
 
-![screenshot 3](src/main/resources/Screenshot3.jpg)
+![screenshot 3](src/main/resources/Screenshot3.JPG)
 
 Again, if there are any issues with the user's input, error messages are returned from the server and displayed on the form.
 
-![screenshot 4](src/main/resources/Screenshot4.jpg)
+![screenshot 4](src/main/resources/Screenshot4.JPG)
 
 If the user has an account, but cannot remember their password, they may instead click on the "Login via email" link on the Login form.  This will take them to a form asking for the email associated with the account.
 
-![screenshot 5](src/main/resources/Screenshot5.jpg)
+![screenshot 5](src/main/resources/Screenshot5.JPG)
 
 Entering a valid email address and clicking submit will cause the application to send an email to the user's email address containing a random sequence of characters (or "reset code") to be used as a one-time password.  It will also present a form to the user where they can input the reset code.
 
-![screenshot 6](src/main/resources/Screenshot6.jpg) 
-![screenshot 7](src/main/resources/Screenshot7.jpg)
+![screenshot 6](src/main/resources/Screenshot6.JPG) 
+![screenshot 7](src/main/resources/Screenshot7.JPG)
 
 Upon successfully logging in or registering an accound, the user is taken to the home page, where they can see the new todo form and all existing todos for that user.
 
-![screenshot 8](src/main/resources/Screenshot8.jpg)
+![screenshot 8](src/main/resources/Screenshot8.JPG)
 
 Using the "Add a new todo" form, the user can enter the description of a new todo they would like to save, as well as choose whether it has been completed or not.
 
-![screenshot 9](src/main/resources/Screenshot9.jpg)
+![screenshot 9](src/main/resources/Screenshot9.JPG)
 
 Clicking the "Submit" button adds the todo to the database, and the new todo is displayed on the bottom of the list of todos.
 
-![screenshot 10](src/main/resources/Screenshot10.jpg)
+![screenshot 10](src/main/resources/Screenshot10.JPG)
 
 The user can click on the "Completed" or "Not completed" text on the todo to toggle between the two states.  They can also click the "X" button at the top right of a todo to delete it entirely.
 
-![screenshot 11](src/main/resources/Screenshot11.jpg)
+![screenshot 11](src/main/resources/Screenshot11.JPG)
 
 A user may update their user information by clicking the "Update Info" link in the navbar.  Here they can change their first name, last name, or email address, and, provided all input is valid, clicking the "Submit" button will update this information in the database.
 
-![screenshot 12](src/main/resources/Screenshot12.jpg) 
-![screenshot 13](src/main/resources/Screenshot13.jpg)
+![screenshot 12](src/main/resources/Screenshot12.JPG) 
+![screenshot 13](src/main/resources/Screenshot13.JPG)
 
 Finally, a user may change their password by clicking the "Change Password" link in the navbar.  Here they must enter and confirm the password they would like to change to, and like all other forms any invalid user input is communicated to the user on the form.  If there are no issues with the submission, the user's password is updated in the database for when they next log in.
 
-![screenshot 14](src/main/resources/Screenshot14.jpg)
+![screenshot 14](src/main/resources/Screenshot14.JPG)
 
 ## Techniques and Technologies Used
 
@@ -77,6 +77,6 @@ User passwords and reset codes are securely stored in the database by running th
 Email functionality is enabled by utilizing the Java Mail API.  Additionally, MailGun is used as the SMTP server that the Java program interfaces with.  The service not only sends emails to the address provided by the user, but also knows whether the email was successfully received.  If it is not, this is communicated to the user via an error message.
 
 Finally, a Continuous-Integration/Continuous-Delivery pipeline was set up for this project using Travis-CI and Heroku.  All changes to the master branch must come via pull request, and each pull request triggers a Travis-CI build of the updated project.  A merge is only allowed if the build succeeds, meaning the complete test suite passes and there are no errors or warnings generated during the build process.  A sample of such a build is shown below: 
-![screenshot 15](src/main/resources/Screenshot15.jpg)
+![screenshot 15](src/main/resources/Screenshot15.JPG)
 
 Then once the updates are merged into the master branch, the updated version of the project is automatically deployed to Heroku, where the application as well as its databases and email service are hosted.
