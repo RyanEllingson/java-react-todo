@@ -4,7 +4,7 @@ import com.ryan.models.User;
 import com.ryan.util.HashGenerator;
 
 public class UserRepositoryDouble implements UserRepository {
-	private User repoUser = new User(1, "Test", "Testeroo", "test@test.com", HashGenerator.hashPassword("password"), null);
+	private User repoUser = new User(1, "Test", "Testeroo", "test@test.com", HashGenerator.hashPassword("password"), HashGenerator.hashPassword("resetCode"));
 
 	@Override
 	public int createUser(User user) {
